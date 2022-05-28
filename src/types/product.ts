@@ -5,3 +5,5 @@ export type Product = {
   remarks: string;
   quantity: number;
 }
+
+export type ProductList = Product[];

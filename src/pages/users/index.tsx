@@ -9,8 +9,7 @@ import {User} from "../../types/user";
 
 const Users = () => {
   const fetcher = (url: string) => fetch(url, {method: "GET"}).then((res) => res.json());
-  const {data, error} = useSWR("http://localhost:8080/users", fetcher);
-  console.log(data)
+  const {data, error} = useSWR("/api/users/all", fetcher);
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   return (
@@ -139,8 +138,8 @@ const Users = () => {
                       </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                      {data.users.map((user: User) =>
-                        <tr className="hover:bg-gray-100">
+                      {data.map((user: User) =>
+                        <tr className="hover:bg-gray-100" key={user.id}>
                           <td className="p-4 w-4">
                             <div className="flex items-center">
                               <input id="checkbox-1" aria-describedby="checkbox-1"

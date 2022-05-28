@@ -8,7 +8,7 @@ import useSWR from 'swr';
 import {Product} from "../../types/product";
 
 const Products = () => {
-  const {data, error} = useSWR("http://localhost:8080/products");
+  const {data, error} = useSWR("/api/products/all");
   if (error) return <div>failed to load products</div>
   if (!data) return <div>loading...</div>
   return (
@@ -137,7 +137,7 @@ const Products = () => {
                       </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                      {data.products.map((product: Product) =>
+                      {data.map((product: Product) =>
                         <tr className="hover:bg-gray-100" key={product.id}>
                           <td className="p-4 w-4">
                             <div className="flex items-center">
