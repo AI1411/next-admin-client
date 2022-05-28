@@ -6,6 +6,7 @@ import Paginator from "../../components/layouts/Paginator";
 
 import useSWR from 'swr';
 import {Product} from "../../types/product";
+import Head from "next/head";
 
 const Products = () => {
   const {data, error} = useSWR("/api/products/all");
@@ -13,6 +14,9 @@ const Products = () => {
   if (!data) return <div>loading...</div>
   return (
     <div>
+      <Head>
+        <title>商品一覧</title>
+      </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar/>

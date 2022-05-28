@@ -1,11 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Nav from '../components/layouts/Nav'
 import Sidebar from '../components/layouts/Sidebar'
 
 export default function Home() {
   return (
     <div>
+      <Head>
+        <title>ホーム</title>
+      </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar/>

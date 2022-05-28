@@ -7,6 +7,7 @@ import Paginator from "../../components/layouts/Paginator";
 import useSWR from 'swr';
 import {User} from "../../types/user";
 import UserTableRow from "../../components/users/UserTableRow";
+import Head from "next/head";
 
 const Users = () => {
   const {data, error} = useSWR("/api/users/all");
@@ -14,6 +15,9 @@ const Users = () => {
   if (!data) return <div>loading...</div>
   return (
     <div>
+      <Head>
+        <title>ユーザ一覧</title>
+      </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar/>
