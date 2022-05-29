@@ -7,6 +7,7 @@ import Paginator from "../../components/layouts/Paginator";
 import useSWR from 'swr';
 import {Product} from "../../types/product";
 import Head from "next/head";
+import Link from 'next/link';
 
 const Products = () => {
   const {data, error} = useSWR("/api/products/all");
@@ -81,16 +82,18 @@ const Products = () => {
                     </form>
                   </div>
                   <div className="flex items-center space-x-2 sm:space-x-3 ml-auto">
-                    <button type="button" data-modal-toggle="add-user-modal"
-                            className="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
-                      <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                              clipRule="evenodd"/>
-                      </svg>
-                      Add product
-                    </button>
+                    <Link href={`/products/add`}>
+                      <button type="button" data-modal-toggle="add-user-modal"
+                              className="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
+                        <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <path fillRule="evenodd"
+                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                clipRule="evenodd"/>
+                        </svg>
+                        Add product
+                      </button>
+                    </Link>
                     <a href="#"
                        className="w-1/2 text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
                       <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
