@@ -6,6 +6,7 @@ import Footer from "../../components/layouts/Footer";
 import {useForm, SubmitHandler} from "react-hook-form";
 import axios from 'axios';
 import {useRouter} from "next/router";
+import {BASE_URL} from "../../../lib/utils/const";
 
 type Product = {
   product_name: string;
@@ -21,7 +22,7 @@ const AddProductForm = () => {
   const onSubmit: SubmitHandler<Product> = data => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    axios.post("http://localhost:8080/products", data).then((res: any) => {
+    axios.post(BASE_URL + "/products", data).then((res: any) => {
       return router.push('/products');
     }).catch((err: any) => {
       console.log(err)

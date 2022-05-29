@@ -9,20 +9,21 @@ import Link from 'next/link';
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Product} from "../../../types/product";
 import axios from "axios";
+import {BASE_URL} from "../../../../lib/utils/const";
 
 const EditProduct = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Product>();
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? `http://localhost:8080/products/${id}` : null);
+  const {data, error} = useSWR(id ? BASE_URL + `/products/${id}` : null);
   if (error) return <div>failed to load products</div>
   if (!data) return <div>loading...</div>
 
   const onSubmit: SubmitHandler<Product> = data => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    axios.put(`http://localhost:8080/products/${id}`, data).then(() => {
+    axios.put(BASE_URL + `/products/${id}`, data).then(() => {
       return router.push(`/products/${id}`);
     }).catch((err: any) => {
       console.log(err)
