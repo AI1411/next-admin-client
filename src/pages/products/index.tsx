@@ -9,11 +9,25 @@ import {Product} from "../../types/product";
 import Head from "next/head";
 import Link from 'next/link';
 import ProductTableRow from "../../components/products/ProductTableRow";
+import {BASE_URL} from "../../../lib/utils/const";
+import axios from "axios";
 
 const Products = () => {
   const {data, error} = useSWR("/api/products/all");
   if (error) return <div>failed to load products</div>
   if (!data) return <div>loading...</div>
+
+  const deleteProduct = (e: any) => {
+    if (!confirm('この商品を削除してもよろしいですか？')) {
+      return;
+    }
+    const id = e.target.value;
+    axios.delete(`${BASE_URL}/products/${id}`).then(() => {
+      alert('商品を削除しました');
+    }).catch(err => {
+      alert(err);
+    })
+  }
   return (
     <div>
       <Head>
@@ -147,7 +161,7 @@ const Products = () => {
                       <tbody className="divide-y divide-gray-200">
                       {data.length !== 0 ? (
                         data.map((product: Product) =>
-                          <ProductTableRow product={product} key={product.id}/>
+                          <ProductTableRow handleDelete={deleteProduct} product={product} key={product.id}/>
                         )
                       ) : (
                         <div className="hover:bg-gray-100 justify-center">

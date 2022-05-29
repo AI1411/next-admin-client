@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from "next/link";
 
-const ProductTableRow = ({product}: any) => {
+const ProductTableRow = ({product, handleDelete}: any) => {
   return (
     <tr className="hover:bg-gray-100" key={product.id}>
       <td className="p-4 w-4">
@@ -55,6 +55,8 @@ const ProductTableRow = ({product}: any) => {
           </button>
         </Link>
         <button
+          onClick={handleDelete}
+          value={product.id}
           type="button"
           className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
           <svg className="mr-2 h-5 w-5" fill="currentColor"
