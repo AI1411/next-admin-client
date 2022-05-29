@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from "next/link";
 
-const ProductTableRow = (props: any) => {
-  const {product} = props;
+const ProductTableRow = ({product}: any) => {
   return (
     <tr className="hover:bg-gray-100" key={product.id}>
       <td className="p-4 w-4">
