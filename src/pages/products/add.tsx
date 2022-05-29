@@ -22,7 +22,7 @@ const AddProductForm = () => {
   const onSubmit: SubmitHandler<Product> = data => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    axios.post(BASE_URL + "/products", data).then((res: any) => {
+    axios.post(`${BASE_URL}/products`, data).then((res: any) => {
       return router.push('/products');
     }).catch((err: any) => {
       console.log(err)

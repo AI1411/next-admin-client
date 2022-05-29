@@ -12,7 +12,7 @@ const ProductDetail = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? BASE_URL + `/products/${id}` : null);
+  const {data, error} = useSWR(id ? `${BASE_URL}/products/${id}` : null);
   if (error) return <div>failed to load products</div>
   if (!data) return <div>loading...</div>
   return (
