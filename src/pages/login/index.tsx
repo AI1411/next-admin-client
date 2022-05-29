@@ -1,7 +1,33 @@
 import React from 'react';
 import Head from "next/head";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {useRouter} from "next/router";
+import axios from "axios";
+import {BASE_URL} from "../../../lib/utils/const";
+import Link from 'next/link';
+import {parseCookies, setCookie} from 'nookies';
+
+type LoginParams = {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
+  const {register, handleSubmit, formState: {errors}} = useForm<LoginParams>();
+  const router = useRouter();
+  const onSubmit: SubmitHandler<LoginParams> = data => {
+    axios.post(`${BASE_URL}/auth/login`, data).then((res: any) => {
+      const cookies = parseCookies();
+      console.log(res.data)
+      setCookie(null, 'jwt', res.data.value, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      })
+      return router.push('/users');
+    }).catch(err => {
+      alert(err);
+    })
+  };
   return (
     <div>
       <Head>
@@ -23,39 +49,40 @@ const Login = () => {
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 Sign in to platform
               </h2>
-              <form className="mt-8 space-y-6" action="#">
+              <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <label htmlFor="email" className="text-sm font-medium text-gray-900 block mb-2">Your
                     email</label>
-                  <input type="email" name="email" id="email"
-                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                         placeholder="name@company.com"/>
+                  <input
+                    {...register('email', {required: true})}
+                    type="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                    placeholder="name@company.com"
+                  />
+                  {errors.email && <span className="text-xs italic text-red-500">メールアドレスは必須です</span>}
                 </div>
                 <div>
                   <label htmlFor="password" className="text-sm font-medium text-gray-900 block mb-2">Your
                     password</label>
-                  <input type="password" name="password" id="password" placeholder="••••••••"
-                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                  <input
+                    type="password"
+                    {...register('password', {required: true})}
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                   />
-                </div>
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input id="remember" aria-describedby="remember" name="remember" type="checkbox"
-                           className="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded"
-                    />
-                  </div>
-                  <div className="text-sm ml-3">
-                    <label htmlFor="remember" className="font-medium text-gray-900">Remember me</label>
-                  </div>
-                  <a href="#" className="text-sm text-teal-500 hover:underline ml-auto">Lost Password?</a>
+                  {errors.password && <span className="text-xs italic text-red-500">パスワードは必須です</span>}
                 </div>
                 <button type="submit"
                         className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">Login
                   to your account
                 </button>
                 <div className="text-sm font-medium text-gray-500">
-                  Not registered? <a href="https://demo.themesberg.com/windster/authentication/sign-up/"
-                                     className="text-teal-500 hover:underline">Create account</a>
+                  Not registered?
+                  <Link href={`/register`}>
+                    <a className="text-teal-500 hover:underline">
+                      Create account
+                    </a>
+                  </Link>
                 </div>
               </form>
             </div>
