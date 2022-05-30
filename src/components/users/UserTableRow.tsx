@@ -29,16 +29,6 @@ const UserTableRow = (props: any) => {
       <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
         {user.age}
       </td>
-      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">United
-        States
-      </td>
-      <td className="p-4 whitespace-nowrap text-base font-normal text-gray-900">
-        <div className="flex items-center">
-          <div
-            className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"/>
-          Active
-        </div>
-      </td>
       <td className="p-4 whitespace-nowrap space-x-2">
         <button type="button" data-modal-toggle="user-modal"
                 className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
