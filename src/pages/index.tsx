@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import Nav from '../components/layouts/Nav'
 import Sidebar from '../components/layouts/Sidebar'
+import {useRecoilState} from "recoil";
+import {userState} from "../components/store/Auth";
 
 export default function Home() {
+  const [user, setUser] = useRecoilState(userState);
   return (
     <div>
       <Head>

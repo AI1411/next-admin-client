@@ -6,6 +6,8 @@ import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 import Link from 'next/link';
 import {parseCookies, setCookie} from 'nookies';
+import {useRecoilState, useRecoilValue} from "recoil";
+import {userState} from "../../components/store/Auth";
 
 type LoginParams = {
   email: string;
@@ -13,16 +15,17 @@ type LoginParams = {
 }
 
 const Login = () => {
+  const [user, setUser] = useRecoilState(userState);
   const {register, handleSubmit, formState: {errors}} = useForm<LoginParams>();
   const router = useRouter();
   const onSubmit: SubmitHandler<LoginParams> = data => {
     axios.post(`${BASE_URL}/auth/login`, data).then((res: any) => {
       const cookies = parseCookies();
-      console.log(res.data)
       setCookie(null, 'jwt', res.data.value, {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
-      })
+      });
+      setUser(res.data.user);
       return router.push('/users');
     }).catch(err => {
       alert(err);
