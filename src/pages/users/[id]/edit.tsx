@@ -31,7 +31,7 @@ const UserEdit = () => {
   return (
     <>
       <Head>
-        <title>ユーザ詳細</title>
+        <title>ユーザ編集</title>
       </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
@@ -39,7 +39,7 @@ const UserEdit = () => {
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
         <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
           <main className="py-10 px-10">
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">ユーザ詳細</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">ユーザ編集</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
@@ -95,10 +95,11 @@ const UserEdit = () => {
                 type="submit"
                 className="text-white bg-green-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-3">Update
               </button>
-              <Link href={`/products`}>
+              <Link href={`/users`}>
                 <button
                   type="submit"
-                  className="text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back
+                  className="text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Back
                 </button>
               </Link>
             </form>
