@@ -2,8 +2,7 @@ import React from 'react';
 import {User} from "../../types/user";
 import Link from "next/link";
 
-const UserTableRow = (props: any) => {
-  const user: User = props.user
+const UserTableRow = ({user, handleDelete}: any) => {
   return (
     <tr className="hover:bg-gray-100">
       <td className="p-4 w-4">
@@ -59,8 +58,11 @@ const UserTableRow = (props: any) => {
             Edit user
           </button>
         </Link>
-        <button type="button" data-modal-toggle="delete-user-modal"
-                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+        <button
+          type="button"
+          onClick={handleDelete}
+          value={user.id}
+          className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
           <svg className="mr-2 h-5 w-5" fill="currentColor"
                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd"
