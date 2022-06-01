@@ -8,11 +8,25 @@ import useSWR from 'swr';
 import {User} from "../../types/user";
 import UserTableRow from "../../components/users/UserTableRow";
 import Head from "next/head";
+import axios from "axios";
+import {BASE_URL} from "../../../lib/utils/const";
 
 const Users = () => {
   const {data, error} = useSWR("/api/users/all");
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
+
+  const deleteUser = (e: any) => {
+    if (!confirm('このユーザを削除してもよろしいですか？')) {
+      return;
+    }
+    const id = e.target.value;
+    axios.delete(`${BASE_URL}/users/${id}`).then(() => {
+      alert('ユーザを削除しました');
+    }).catch(err => {
+      alert(err);
+    })
+  }
   return (
     <div>
       <Head>
@@ -125,7 +139,7 @@ const Users = () => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                       {data.map((user: User) =>
-                        <UserTableRow user={user} key={user.id} />
+                        <UserTableRow handleDelete={deleteUser} user={user} key={user.id} />
                       )}
                       </tbody>
                     </table>
