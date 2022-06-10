@@ -23,13 +23,10 @@ const OrderDetailTableRow = ({orderDetail, handleDelete}: any) => {
         {orderDetail.quantity}
       </td>
       <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-        {orderDetail.total_price}
+        {orderDetail.price}
       </td>
       <td className="p-4 whitespace-nowrap text-base font-normal text-gray-900">
-        {orderDetail.orderDetail_status}
-      </td>
-      <td className="p-4 whitespace-nowrap text-base font-normal text-gray-900">
-        {orderDetail.remarks}
+        {orderDetail.order_detail_status}
       </td>
       <td className="p-4 whitespace-nowrap space-x-2">
         <Link href={`/orderDetails/${orderDetail.id}`}>

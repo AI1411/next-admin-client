@@ -15,6 +15,7 @@ const ProductDetail = () => {
   const {data, error} = useSWR(id ? `/api/orders/detail?order_id=${id}` : null);
   if (error)return <div>failed to load order...</div>
   if (!data) return <div>loading...</div>
+  console.log(data.order_details)
   return (
     <>
       <Head>

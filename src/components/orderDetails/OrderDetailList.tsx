@@ -1,14 +1,13 @@
 import React from 'react';
 import Paginator from "../../components/layouts/Paginator";
 
-import OrderTableRow from "../../components/orders/OrderTableRow";
-import {Order} from "../../types/order";
 import {OrderDetail} from "../../types/order_detail";
+import OrderDetailTableRow from "./OrderDetailTableRow";
 
 const OrderDetailList = ({orderDetails}: any) => {
   return (
     <main>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-5">
         <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full">
             <div className="shadow overflow-hidden">
@@ -25,7 +24,7 @@ const OrderDetailList = ({orderDetails}: any) => {
                   </th>
                   <th scope="col"
                       className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                    ユーザID
+                    商品ID
                   </th>
                   <th scope="col"
                       className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
@@ -33,15 +32,13 @@ const OrderDetailList = ({orderDetails}: any) => {
                   </th>
                   <th scope="col"
                       className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                    合計金額
+                    価格
                   </th>
                   <th scope="col"
                       className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                     ステータス
                   </th>
-                  <th scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                    備考
+                  <th scope="col" className="p-4">
                   </th>
                   <th scope="col" className="p-4">
                   </th>
@@ -50,7 +47,7 @@ const OrderDetailList = ({orderDetails}: any) => {
                 <tbody className="divide-y divide-gray-200">
                 {orderDetails ? (
                   orderDetails.map((orderDetail: OrderDetail) =>
-                    <OrderTableRow order={orderDetail} key={orderDetail.id}/>
+                    <OrderDetailTableRow orderDetail={orderDetail} key={orderDetail.id}/>
                   )
                 ) : (
                   <div className="hover:bg-gray-100 justify-center">
