@@ -7,6 +7,8 @@ import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
 import OrderDetailList from "../../../components/orderDetails/OrderDetailList";
+import axios from "axios";
+import {BASE_URL} from "../../../../lib/utils/const";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -15,7 +17,18 @@ const ProductDetail = () => {
   const {data, error} = useSWR(id ? `/api/orders/detail?order_id=${id}` : null);
   if (error) return <div>failed to load order...</div>
   if (!data) return <div>loading...</div>
-  console.log(data.order_details)
+
+  const deleteOrderDetail = (e: any) => {
+    if (!confirm('この注文明細を削除してもよろしいですか？')) {
+      return;
+    }
+    const id = e.target.value;
+    axios.delete(`${BASE_URL}/orderDetails/${id}`).then(() => {
+      alert('注文を削除しました');
+    }).catch(err => {
+      alert(err);
+    })
+  }
   return (
     <>
       <Head>
@@ -94,7 +107,12 @@ const ProductDetail = () => {
                 className="text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back
               </button>
             </Link>
-            {data.order_details.length > 0 ? <OrderDetailList orderDetails={data.order_details}/> : <div>test</div>}
+            {data.order_details.length > 0
+              ? <OrderDetailList
+                orderDetails={data.order_details}
+                handleDelete={deleteOrderDetail}
+              />
+              : <div>test</div>}
           </main>
           <Footer/>
         </div>

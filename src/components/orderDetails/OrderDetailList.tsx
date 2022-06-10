@@ -4,7 +4,7 @@ import Paginator from "../../components/layouts/Paginator";
 import {OrderDetail} from "../../types/order_detail";
 import OrderDetailTableRow from "./OrderDetailTableRow";
 
-const OrderDetailList = ({orderDetails}: any) => {
+const OrderDetailList = ({orderDetails, handleDelete}: any) => {
   return (
     <main>
       <div className="flex flex-col mt-5">
@@ -47,7 +47,7 @@ const OrderDetailList = ({orderDetails}: any) => {
                 <tbody className="divide-y divide-gray-200">
                 {orderDetails ? (
                   orderDetails.map((orderDetail: OrderDetail) =>
-                    <OrderDetailTableRow orderDetail={orderDetail} key={orderDetail.id}/>
+                    <OrderDetailTableRow orderDetail={orderDetail} key={orderDetail.id} handleDelete={handleDelete} />
                   )
                 ) : (
                   <div className="hover:bg-gray-100 justify-center">
