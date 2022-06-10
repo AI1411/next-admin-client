@@ -139,7 +139,7 @@ const Users = () => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                       {data.map((user: User) =>
-                        <UserTableRow handleDelete={deleteUser} user={user} key={user.id} />
+                        <UserTableRow handleDelete={deleteUser} user={user} key={user.id}/>
                       )}
                       </tbody>
                     </table>

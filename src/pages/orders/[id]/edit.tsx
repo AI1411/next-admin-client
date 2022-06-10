@@ -93,7 +93,7 @@ const EditOrder = () => {
                 </div>
                 <div>
                   <label
-                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">備考</label>
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">備考</label>
                   <textarea
                     defaultValue={data.remarks}
                     {...register('remarks', {maxLength: 255})}
