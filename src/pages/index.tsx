@@ -1,11 +1,24 @@
 import Head from 'next/head'
 import Nav from '../components/layouts/Nav'
 import Sidebar from '../components/layouts/Sidebar'
-import {useRecoilState} from "recoil";
-import {userState} from "../components/store/Auth";
+import useSWR from "swr";
+import React from "react";
+import {useRouter} from "next/router";
+
 
 export default function Home() {
-  const [user, setUser] = useRecoilState(userState);
+  const router = useRouter();
+  const {data, error} = useSWR("/api/auth/me");
+  if (error) return <div>loading...</div>
+  if (!data) return <div>loading...</div>
+  if (data.message === 'unauthorized!') {
+    router.push('/login').then(r => {
+      if (!r) {
+        alert('遷移失敗')
+      }
+    });
+  }
+
   return (
     <div>
       <Head>
@@ -557,5 +570,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
