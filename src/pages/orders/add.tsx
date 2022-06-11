@@ -9,6 +9,8 @@ import {useRouter} from "next/router";
 import {BASE_URL} from "../../../lib/utils/const";
 import {Order} from "../../types/order";
 import {ORDER_STATUS} from "../../../lib/enums/status";
+import useSWR from "swr";
+import {User} from "../../types/user";
 
 const AddOrderForm = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Order>();
@@ -25,6 +27,10 @@ const AddOrderForm = () => {
       console.log(err)
     })
   };
+
+  const {data, error} = useSWR("/api/users/all");
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
 
   return (
     <>
@@ -43,12 +49,14 @@ const AddOrderForm = () => {
                 <div>
                   <label htmlFor="user_id"
                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ユーザ</label>
-                  <input
-                    type="text"
-                    {...register('user_id', {required: true})}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ユーザ"
-                  />
+                  <select
+                    defaultValue={``}
+                    className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                    {...register("user_id", {required: true})}>
+                    {data.map((user: User) =>
+                      <option key={user.id} value={user.id}>{user.last_name + ' ' + user.first_name}</option>
+                    )}
+                  </select>
                   {errors.user_id && <span className="text-xs italic text-red-500">ユーザは必須です</span>}
                 </div>
                 <div>
