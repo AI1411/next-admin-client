@@ -29,9 +29,9 @@ const Sidebar = () => {
                 </form>
               </li>
               <li>
-                <Link href="/users">
-                  <a href="https://demo.themesberg.com/windster/users/list/"
-                     className="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">
+                <Link href={`/users`}>
+                  <a
+                    className="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">
                     <svg
                       className="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
                       fill="currentColor" viewBox="0 0 20 20"
@@ -45,9 +45,9 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/products">
-                  <a href="https://demo.themesberg.com/windster/users/list/"
-                     className="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">
+                <Link href={`/products`}>
+                  <a
+                    className="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">
                     <svg
                       className="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
                       fill="currentColor" viewBox="0 0 20 20"
@@ -57,6 +57,22 @@ const Sidebar = () => {
                             clipRule="evenodd"/>
                     </svg>
                     <span className="ml-3 flex-1 whitespace-nowrap">Products</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/orders`}>
+                  <a
+                    className="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">
+                    <svg
+                      className="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
+                      fill="currentColor" viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path fillRule="evenodd"
+                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clipRule="evenodd"/>
+                    </svg>
+                    <span className="ml-3 flex-1 whitespace-nowrap">Orders</span>
                   </a>
                 </Link>
               </li>

@@ -63,7 +63,8 @@ const AddProductForm = () => {
                   {errors.price && <span className="text-xs italic text-red-500">価格は必須です</span>}
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">数量</label>
+                  <label htmlFor="phone"
+                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">数量</label>
                   <input
                     type="tel"
                     defaultValue={1}
