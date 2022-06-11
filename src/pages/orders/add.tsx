@@ -31,7 +31,6 @@ const AddOrderForm: React.FC = () => {
     }
     data.quantity = Number(data.quantity);
     data.total_price = Number(data.total_price);
-    console.log(data)
     axios.post(`${BASE_URL}/orders`, data).then((res: any) => {
       return router.push('/orders');
     }).catch((err: any) => {
@@ -40,11 +39,16 @@ const AddOrderForm: React.FC = () => {
   };
 
   const addOrderDetailForm = () => {
-    append(AddOrderDetailForm)
+    append({
+      'product_id': '',
+      'price': 0,
+      'quantity': 0,
+      'order_detail_status': 'new',
+    })
   }
 
-  const {data, error} = useSWR("/api/users/all");
-  if (error) return <div>failed to load</div>
+  const {data, error} = useSWR<User[] | undefined>("/api/users/all");
+  if (error) return <div>loading...</div>
   if (!data) return <div>loading...</div>
 
   return (
@@ -68,7 +72,7 @@ const AddOrderForm: React.FC = () => {
                     defaultValue={``}
                     className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     {...register("user_id", {required: true})}>
-                    {data.map((user: User) =>
+                    {data?.map((user: User) =>
                       <option key={user.id} value={user.id}>{user.last_name + ' ' + user.first_name}</option>
                     )}
                   </select>

@@ -1,7 +1,12 @@
 import React from 'react';
 import {ORDER_STATUS} from "../../../lib/enums/status";
+import useSWR from "swr";
+import {Product} from "../../types/product";
 
 const AddOrderDetailForm = ({index, register, errors}: any) => {
+  const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
+  if (error) return <div>loading...</div>
+  if (!data) return <div>loading...</div>
   return (
     <>
       <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -9,16 +14,20 @@ const AddOrderDetailForm = ({index, register, errors}: any) => {
       </label>
       <div className="grid gap-6 mb-6 lg:grid-cols-2">
         <div>
-          <label htmlFor="product_id"
-                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">商品ID</label>
-          <input
-            type="text"
-            defaultValue={100}
-            {...register(`order_details.${index}.product_id`, {required: true})}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="合計金額"
-          />
-          {errors.product_id && <span className="text-xs italic text-red-500">商品IDは必須です</span>}
+          <label
+            htmlFor="product_id"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >商品ID
+          </label>
+          <select
+            defaultValue={``}
+            className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+            {...register(`order_details.${index}.product_id`, {required: true})}>
+            {data?.map((product: Product) =>
+              <option key={product.id} value={product.id}>{product.product_name}</option>
+            )}
+          </select>
+          {errors?.order_details?.[index]?.product_id && <span className="text-xs italic text-red-500">商品IDは必須です</span>}
         </div>
         <div>
           <label
@@ -33,7 +42,7 @@ const AddOrderDetailForm = ({index, register, errors}: any) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="価格"
           />
-          {errors.quantity && <span className="text-xs italic text-red-500">価格は必須です</span>}
+          {errors?.order_details?.[index]?.quantity && <span className="text-xs italic text-red-500">価格は必須です</span>}
         </div>
         <div>
           <label htmlFor="quantity"
@@ -45,7 +54,7 @@ const AddOrderDetailForm = ({index, register, errors}: any) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="数量"
           />
-          {errors.quantity && <span className="text-xs italic text-red-500">数量は必須です</span>}
+          {errors?.order_details?.[index]?.quantity && <span className="text-xs italic text-red-500">数量は必須です</span>}
         </div>
         <div>
           <label htmlFor="order_detail_status"
@@ -57,7 +66,8 @@ const AddOrderDetailForm = ({index, register, errors}: any) => {
               <option key={status.id} value={status.status_name}>{status.status_name}</option>
             )}
           </select>
-          {errors.order_detail_status && <span className="text-xs italic text-red-500">注文明細ステータスは必須です</span>}
+          {errors?.order_details?.[index]?.order_detail_status &&
+          <span className="text-xs italic text-red-500">注文明細ステータスは必須です</span>}
         </div>
       </div>
       <hr className={`mb-3`}/>
