@@ -5,24 +5,25 @@ import Footer from "../../components/layouts/Footer";
 import Paginator from "../../components/layouts/Paginator";
 
 import useSWR from 'swr';
-import {User} from "../../types/user";
-import UserTableRow from "../../components/users/UserTableRow";
 import Head from "next/head";
-import axios from "axios";
+import Link from 'next/link';
 import {BASE_URL} from "../../../lib/utils/const";
+import axios from "axios";
+import OrderTableRow from "../../components/orders/OrderTableRow";
+import {Order} from "../../types/order";
 
-const Users = () => {
-  const {data, error} = useSWR("/api/users/all");
-  if (error) return <div>failed to load</div>
+const Orders = () => {
+  const {data, error} = useSWR("/api/orders/all");
+  if (error) return <div>failed to load orders</div>
   if (!data) return <div>loading...</div>
 
-  const deleteUser = (e: any) => {
-    if (!confirm('このユーザを削除してもよろしいですか？')) {
+  const deleteOrder = (e: any) => {
+    if (!confirm('この注文を削除してもよろしいですか？')) {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/users/${id}`).then(() => {
-      alert('ユーザを削除しました');
+    axios.delete(`${BASE_URL}/orders/${id}`).then(() => {
+      alert('注文を削除しました');
     }).catch(err => {
       alert(err);
     })
@@ -30,7 +31,7 @@ const Users = () => {
   return (
     <div>
       <Head>
-        <title>ユーザ一覧</title>
+        <title>注文一覧</title>
       </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
@@ -81,7 +82,7 @@ const Users = () => {
                       </li>
                     </ol>
                   </nav>
-                  <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">All users</h1>
+                  <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">All orders</h1>
                 </div>
                 <div className="sm:flex">
                   <div
@@ -91,11 +92,23 @@ const Users = () => {
                       <div className="mt-1 relative lg:w-64 xl:w-96">
                         <input type="text" name="email" id="users-search"
                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                               placeholder="Search for users"/>
+                               placeholder="Search for orders"/>
                       </div>
                     </form>
                   </div>
                   <div className="flex items-center space-x-2 sm:space-x-3 ml-auto">
+                    <Link href={`/orders/add`}>
+                      <button type="button" data-modal-toggle="add-user-modal"
+                              className="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
+                        <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <path fillRule="evenodd"
+                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                clipRule="evenodd"/>
+                        </svg>
+                        Add order
+                      </button>
+                    </Link>
                     <a href="#"
                        className="w-1/2 text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
                       <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
@@ -127,19 +140,37 @@ const Users = () => {
                         </th>
                         <th scope="col"
                             className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                          Name
+                          ユーザID
                         </th>
                         <th scope="col"
                             className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                          Age
+                          数量
+                        </th>
+                        <th scope="col"
+                            className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                          合計金額
+                        </th>
+                        <th scope="col"
+                            className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                          ステータス
+                        </th>
+                        <th scope="col"
+                            className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                          備考
                         </th>
                         <th scope="col" className="p-4">
                         </th>
                       </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                      {data.map((user: User) =>
-                        <UserTableRow handleDelete={deleteUser} user={user} key={user.id}/>
+                      <tbody className="divide-y divide-gray-200">
+                      {data.length !== 0 ? (
+                        data.map((order: Order) =>
+                          <OrderTableRow handleDelete={deleteOrder} order={order} key={order.id}/>
+                        )
+                      ) : (
+                        <div className="hover:bg-gray-100 justify-center">
+                          <p className={`my-3 mx-4`}>注文はありません</p>
+                        </div>
                       )}
                       </tbody>
                     </table>
@@ -156,4 +187,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Orders;
