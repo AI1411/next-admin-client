@@ -3,7 +3,7 @@ import Head from "next/head";
 import Nav from "../../components/layouts/Nav";
 import Sidebar from "../../components/layouts/Sidebar";
 import Footer from "../../components/layouts/Footer";
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm, SubmitHandler, useFieldArray} from "react-hook-form";
 import axios from 'axios';
 import {useRouter} from "next/router";
 import {BASE_URL} from "../../../lib/utils/const";
@@ -11,22 +11,37 @@ import {Order} from "../../types/order";
 import {ORDER_STATUS} from "../../../lib/enums/status";
 import useSWR from "swr";
 import {User} from "../../types/user";
+import AddOrderDetailForm from "../../components/orderDetails/AddOrderDetailForm";
 
-const AddOrderForm = () => {
-  const {register, handleSubmit, formState: {errors}} = useForm<Order>();
+const AddOrderForm: React.FC = () => {
+  const {register, handleSubmit, formState: {errors}, control} = useForm<Order>();
+  const {fields, append} = useFieldArray({
+    control,
+    name: 'order_details',
+    keyName: 'key'
+  })
   const router = useRouter();
   const onSubmit: SubmitHandler<Order> = data => {
+    data.order_details.map((detail) => {
+      detail.quantity = Number(detail.quantity);
+      detail.price = Number(detail.price);
+    })
     if (!confirm('注文を作成してもよろしいですか？')) {
       return;
     }
     data.quantity = Number(data.quantity);
     data.total_price = Number(data.total_price);
+    console.log(data)
     axios.post(`${BASE_URL}/orders`, data).then((res: any) => {
       return router.push('/orders');
     }).catch((err: any) => {
-      console.log(err)
+      alert(err)
     })
   };
+
+  const addOrderDetailForm = () => {
+    append(AddOrderDetailForm)
+  }
 
   const {data, error} = useSWR("/api/users/all");
   if (error) return <div>failed to load</div>
@@ -105,9 +120,36 @@ const AddOrderForm = () => {
                   {errors.remarks && <span className="text-xs italic text-red-500">注文備考は255文字以内です</span>}
                 </div>
               </div>
-              <button type="submit"
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">注文明細追加</h1>
+              <button
+                type="button"
+                onClick={addOrderDetailForm}
+                data-modal-toggle="add-user-modal"
+                className="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto mb-2"
+              >
+                <svg className="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd"
+                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                        clipRule="evenodd"/>
+                </svg>
+                Add
               </button>
+              {fields.map((field, index) => (
+                <AddOrderDetailForm
+                  key={index}
+                  index={index}
+                  control={control}
+                  register={register}
+                  errors={errors}
+                />
+              ))}
+              {fields.length > 0 ? <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Submit
+              </button> : ''}
             </form>
           </main>
           <Footer/>

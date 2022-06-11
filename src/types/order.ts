@@ -1,3 +1,5 @@
+import {OrderDetail} from "./order_detail";
+
 export type Order = {
   id: string;
   user_id: string;
@@ -5,4 +7,6 @@ export type Order = {
   total_price: number;
   order_status: string;
   remarks: string;
+
+  order_details: OrderDetail[];
 }
