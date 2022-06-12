@@ -6,6 +6,7 @@ import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 import Link from 'next/link';
 import {setCookie} from 'nookies';
+import useSWR from "swr";
 
 type LoginParams = {
   email: string;
@@ -13,8 +14,9 @@ type LoginParams = {
 }
 
 const Login = () => {
-  const {register, handleSubmit, formState: {errors}} = useForm<LoginParams>();
   const router = useRouter();
+
+  const {register, handleSubmit, formState: {errors}} = useForm<LoginParams>();
   const onSubmit: SubmitHandler<LoginParams> = async data => {
     await axios.post(`${BASE_URL}/auth/login`, data).then((res: any) => {
       setCookie(null, 'jwt', res.data.value, {
@@ -26,6 +28,17 @@ const Login = () => {
       alert(err);
     })
   };
+
+  const {data, error} = useSWR("/api/auth/me");
+  if (error) return <div>loading...</div>
+  if (!data) return <div>loading...</div>
+  if (data.message === 'its me!') {
+    router.push('/').then(r => {
+      if (!r) {
+        alert('遷移失敗')
+      }
+    });
+  }
   return (
     <div>
       <Head>
