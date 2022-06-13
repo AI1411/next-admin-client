@@ -26,7 +26,7 @@ const TodoDetail = () => {
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
         <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
           <main className="py-10 px-10">
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">TODO詳細</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">ToDo詳細</h1>
             <div className="grid gap-6 mb-6 lg:grid-cols-2">
               <div>
                 <label
