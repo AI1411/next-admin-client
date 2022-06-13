@@ -1,3 +1,5 @@
+import {Todo} from "./todo";
+
 export type User = {
   id: number;
   first_name: string;
@@ -5,6 +7,6 @@ export type User = {
   age: number;
   email: string;
   password: string;
-  created_at: string;
-  updated_at: string;
+
+  todos: Todo[]
 };

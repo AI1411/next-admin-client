@@ -6,34 +6,19 @@ import Nav from "../../../components/layouts/Nav";
 import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
-import {BASE_URL} from "../../../../lib/utils/const";
-import {User} from "../../../types/user";
-import TodoList from "../../../components/todos/TodoList";
-import axios from "axios";
 
-const UserDetail = () => {
+const TodoDetail = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR<User | undefined>(id ? `${BASE_URL}/users/${id}` : null);
-  if (error) return <div>failed to load products</div>
+  const {data, error} = useSWR(id ? `/api/todos/detail?todo_id=${id}` : null);
+  if (error) return <div>failed to load todo</div>
   if (!data) return <div>loading...</div>
 
-  const deleteTodo = (e: any) => {
-    if (!confirm('このtodoを削除してもよろしいですか？')) {
-      return;
-    }
-    const id = e.target.value;
-    axios.delete(`${BASE_URL}/todos/${id}`).then(() => {
-      alert('todoを削除しました');
-    }).catch(err => {
-      alert(err);
-    })
-  }
   return (
     <>
       <Head>
-        <title>ユーザ詳細</title>
+        <title>TODO詳細</title>
       </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
@@ -41,68 +26,62 @@ const UserDetail = () => {
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
         <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
           <main className="py-10 px-10">
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">ユーザ詳細</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">TODO詳細</h1>
             <div className="grid gap-6 mb-6 lg:grid-cols-2">
               <div>
-                <label htmlFor="first_name"
-                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">名</label>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">タイトル</label>
                 <input
                   type="text"
                   readOnly
-                  value={data.first_name}
+                  value={data.title}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="商品名"/>
+                  placeholder="タイトル"/>
               </div>
               <div>
-                <label htmlFor="last_name"
-                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">姓</label>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ステータス</label>
                 <input
                   type="text"
                   readOnly
-                  value={data.last_name}
+                  value={data.status}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="価格"/>
+                  placeholder="ステータス"/>
               </div>
               <div>
-                <label htmlFor="phone"
-                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">年齢</label>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ユーザID</label>
                 <input
                   type="text"
                   readOnly
-                  value={data.age}
+                  value={data.user_id}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="数量"
+                  placeholder="ユーザID"
                 />
               </div>
               <div>
-                <label htmlFor="company"
-                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">メールアドレス</label>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">本文</label>
                 <input
                   readOnly
-                  value={data.email}
+                  value={data.body}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="説明"
+                  placeholder="本文"
                 />
               </div>
             </div>
-            <Link href={`/users/${id}/edit`}>
+            <Link href={`/todos/${id}/edit`}>
               <button
                 type="button"
                 className="text-white bg-green-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-3">Edit
               </button>
             </Link>
-            <Link href={`/users`}>
+            <Link href={`/todos`}>
               <button
                 type="button"
                 className="text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back
               </button>
             </Link>
-            {data.todos.length > 0
-              ? <TodoList
-                todos={data.todos}
-                handleDelete={deleteTodo}
-              />
-              : <div>test</div>}
           </main>
           <Footer/>
         </div>
@@ -111,4 +90,4 @@ const UserDetail = () => {
   );
 };
 
-export default UserDetail;
+export default TodoDetail;
