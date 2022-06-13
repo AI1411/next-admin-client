@@ -16,7 +16,7 @@ const EditTodo = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR<Todo>(id ? `${BASE_URL}/todos/${id}` : null);
+  const {data, error} = useSWR<Todo | undefined>(id ? `${BASE_URL}/todos/${id}` : null);
   if (error) return <div>failed to load todos</div>
   if (!data) return <div>loading...</div>
 

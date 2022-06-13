@@ -6,12 +6,13 @@ import Nav from "../../../components/layouts/Nav";
 import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
+import {Todo} from "../../../types/todo";
 
 const TodoDetail = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? `/api/todos/detail?todo_id=${id}` : null);
+  const {data, error} = useSWR<Todo | undefined>(id ? `/api/todos/detail?todo_id=${id}` : null);
   if (error) return <div>failed to load todo</div>
   if (!data) return <div>loading...</div>
 
@@ -76,7 +77,7 @@ const TodoDetail = () => {
                 className="text-white bg-green-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-3">Edit
               </button>
             </Link>
-            <Link href={`/todos`}>
+            <Link href={`/users/${data.user_id}`}>
               <button
                 type="button"
                 className="text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back
