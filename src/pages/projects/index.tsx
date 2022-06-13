@@ -29,7 +29,7 @@ const breadcrumbs = [
 ]
 
 const Projects = () => {
-  const {data, error} = useSWR("/api/projects/all");
+  const {data, error} = useSWR<Project[] | undefined>("/api/projects/all");
   if (error) return <div>failed to load projects</div>
   if (!data) return <div>loading...</div>
 

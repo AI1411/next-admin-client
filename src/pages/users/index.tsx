@@ -12,7 +12,7 @@ import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 
 const Users = () => {
-  const {data, error} = useSWR("/api/users/all");
+  const {data, error} = useSWR<User[] | undefined>("/api/users/all");
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
 

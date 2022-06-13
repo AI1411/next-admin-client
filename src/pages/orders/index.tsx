@@ -13,7 +13,7 @@ import OrderTableRow from "../../components/orders/OrderTableRow";
 import {Order} from "../../types/order";
 
 const Orders = () => {
-  const {data, error} = useSWR("/api/orders/all");
+  const {data, error} = useSWR<Order[] | undefined>("/api/orders/all");
   if (error) return <div>failed to load orders</div>
   if (!data) return <div>loading...</div>
 

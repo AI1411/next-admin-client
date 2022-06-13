@@ -29,7 +29,7 @@ const breadcrumbs = [
 ]
 
 const Products = () => {
-  const {data, error} = useSWR("/api/products/all");
+  const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
   if (error) return <div>failed to load products</div>
   if (!data) return <div>loading...</div>
 
