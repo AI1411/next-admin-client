@@ -24,21 +24,20 @@ export const DatePicker = <T, >(
     minDate,
     maxDate,
   }: Props<T>) => {
-  const [startDate, setStartDate] = useState(new Date());
   return (
     <>
       <div>
         <Controller
           control={control}
           name={name}
-          render={() => (
+          render={({ field: { onChange, value } }) => (
             <ReactDatePicker
               className={className}
               dateFormat="yyyy-MM-dd HH:mm"
               showTimeSelect
               timeIntervals={timeIntervals}
-              onChange={(date) => setStartDate(date as Date)}
-              selected={startDate as Date}
+              onChange={onChange}
+              selected={value as Date}
               minDate={minDate as Date}
               maxDate={maxDate as Date}
               isClearable
