@@ -139,7 +139,7 @@ const Epics = () => {
                       <tbody className="divide-y divide-gray-200">
                       {data.length !== 0 ? (
                         data.map((epic: Epic) =>
-                          <EpicTableRow epic={epic} key={epic.id}/>
+                          <EpicTableRow handleDelete={deleteEpic} epic={epic} key={epic.id}/>
                         )
                       ) : (
                         <div className="hover:bg-gray-100 justify-center">
