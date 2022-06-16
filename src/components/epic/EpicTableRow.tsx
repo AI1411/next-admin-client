@@ -1,9 +1,15 @@
 import React from 'react';
 import Link from "next/link";
+import {Epic} from "../../types/epic";
 
-const ProjectTableRow = ({project, handleDelete}: any) => {
+type Props = {
+  epic: Epic,
+  handleDelete?: any;
+}
+
+const EpicTableRow = ({epic, handleDelete}: Props) => {
   return (
-    <tr className="hover:bg-gray-100" key={project.id}>
+    <tr className="hover:bg-gray-100" key={epic.id}>
       <td className="p-4 w-4">
         <div className="flex items-center">
           <input id="checkbox-1" aria-describedby="checkbox-1"
@@ -13,13 +19,31 @@ const ProjectTableRow = ({project, handleDelete}: any) => {
         </div>
       </td>
       <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-        {project.project_title}
+        {epic.epic_title}
       </td>
       <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-        {project.project_description}
+        {epic.epic_description}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.label}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.milestone_id.substring(0, 5)}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.assignee_id.substring(0, 5)}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.project_id.substring(0, 5)}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.is_open}
+      </td>
+      <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+        {epic.author_id.substring(0, 5)}
       </td>
       <td className="p-4 whitespace-nowrap space-x-2">
-        <Link href={`/projects/${project.id}`}>
+        <Link href={`/projects/${epic.project_id}/epics/${epic.id}`}>
           <button type="button"
                   className="text-white bg-green-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
             <svg className="mr-2 h-5 w-5" fill="currentColor"
@@ -30,10 +54,10 @@ const ProjectTableRow = ({project, handleDelete}: any) => {
                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                     clipRule="evenodd"/>
             </svg>
-            View project
+            View epic
           </button>
         </Link>
-        <Link href={`/projects/${project.id}/epics`}>
+        <Link href={`/epics/${epic.id}/epics`}>
           <button type="button"
                   className="text-white bg-yellow-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
             <svg className="mr-2 h-5 w-5" fill="currentColor"
@@ -47,7 +71,7 @@ const ProjectTableRow = ({project, handleDelete}: any) => {
             View epics
           </button>
         </Link>
-        <Link href={`/projects/${project.id}/edit`}>
+        <Link href={`/epics/${epic.id}/edit`}>
           <button
             type="button"
             className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
@@ -59,12 +83,12 @@ const ProjectTableRow = ({project, handleDelete}: any) => {
                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                     clipRule="evenodd"/>
             </svg>
-            Edit project
+            Edit epic
           </button>
         </Link>
         <button
           onClick={handleDelete}
-          value={project.id}
+          value={epic.id}
           type="button"
           className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
           <svg className="mr-2 h-5 w-5" fill="currentColor"
@@ -73,11 +97,11 @@ const ProjectTableRow = ({project, handleDelete}: any) => {
                   d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                   clipRule="evenodd"/>
           </svg>
-          Delete project
+          Delete epic
         </button>
       </td>
     </tr>
   );
 };
 
-export default ProjectTableRow;
+export default EpicTableRow;

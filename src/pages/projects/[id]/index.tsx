@@ -6,14 +6,13 @@ import Nav from "../../../components/layouts/Nav";
 import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
-import {BASE_URL} from "../../../../lib/utils/const";
 import {Project} from "../../../types/projects";
 
 const ProjectDetail = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR<Project | undefined>(id ? `${BASE_URL}/projects/${id}` : null);
+  const {data, error} = useSWR<Project | undefined>(id ? `/api/projects/detail?project_id=${id}` : null);
   if (error) return <div>failed to load projects</div>
   if (!data) return <div>loading...</div>
   return (
