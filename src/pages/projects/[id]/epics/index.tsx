@@ -1,17 +1,17 @@
 import React from 'react';
 
 import useSWR from 'swr';
-import {Epic} from "../../../types/epic";
-import Nav from "../../../components/layouts/Nav";
-import Sidebar from "../../../components/layouts/Sidebar";
 import Link from 'next/link';
-import Paginator from "../../../components/layouts/Paginator";
-import Footer from "../../../components/layouts/Footer";
 import {useRouter} from "next/router";
 import Head from "next/head";
-import EpicTableRow from "../../../components/epic/EpicTableRow";
 import axios from "axios";
-import {BASE_URL} from "../../../../lib/utils/const";
+import {BASE_URL} from "../../../../../lib/utils/const";
+import {Epic} from "../../../../types/epic";
+import Nav from "../../../../components/layouts/Nav";
+import Sidebar from "../../../../components/layouts/Sidebar";
+import EpicTableRow from "../../../../components/epic/EpicTableRow";
+import Paginator from "../../../../components/layouts/Paginator";
+import Footer from "../../../../components/layouts/Footer";
 
 const Epics = () => {
   const router = useRouter();
