@@ -7,6 +7,7 @@ import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
 import {Product} from "../../../types/product";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const ProductDetail = () => {
 
   const {data, error} = useSWR<Product | undefined>(id ? `/api/products/detail?product_id=${id}` : null);
   if (error) return <div>failed to load products</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <Head>

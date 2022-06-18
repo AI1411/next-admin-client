@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Product} from "../../../types/product";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const EditProduct = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Product>();
@@ -18,7 +19,7 @@ const EditProduct = () => {
 
   const {data, error} = useSWR(id ? `${BASE_URL}/products/${id}` : null);
   if (error) return <div>failed to load products</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Product> = data => {
     data.price = Number(data.price);

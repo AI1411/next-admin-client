@@ -6,7 +6,7 @@ import {Product} from "../../types/product";
 const AddOrderDetailForm = ({index, register, errors}: any) => {
   const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
   if (error) return <div>loading...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">

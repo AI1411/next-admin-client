@@ -12,6 +12,7 @@ import {ORDER_STATUS} from "../../../lib/enums/status";
 import useSWR from "swr";
 import {User} from "../../types/user";
 import AddOrderDetailForm from "../../components/orderDetails/AddOrderDetailForm";
+import Loading from "../../components/layouts/parts/Loading";
 
 const AddOrderForm: React.FC = () => {
   const {register, handleSubmit, formState: {errors}, control} = useForm<Order>();
@@ -49,7 +50,7 @@ const AddOrderForm: React.FC = () => {
 
   const {data, error} = useSWR<User[] | undefined>("/api/users/all");
   if (error) return <div>loading...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   return (
     <>

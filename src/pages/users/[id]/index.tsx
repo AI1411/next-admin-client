@@ -10,6 +10,7 @@ import {BASE_URL} from "../../../../lib/utils/const";
 import {User} from "../../../types/user";
 import TodoList from "../../../components/todos/TodoList";
 import axios from "axios";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const UserDetail = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const UserDetail = () => {
 
   const {data, error} = useSWR<User | undefined>(id ? `${BASE_URL}/users/${id}` : null);
   if (error) return <div>failed to load products</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteTodo = (e: any) => {
     if (!confirm('このtodoを削除してもよろしいですか？')) {

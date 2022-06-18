@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import {User} from "../../../types/user";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const UserEdit = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<User>();
@@ -18,7 +19,7 @@ const UserEdit = () => {
 
   const {data, error} = useSWR(id ? `${BASE_URL}/users/${id}` : null);
   if (error) return <div>failed to load user</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<User> = data => {
     data.age = Number(data.age);

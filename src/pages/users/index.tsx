@@ -10,11 +10,12 @@ import UserTableRow from "../../components/users/UserTableRow";
 import Head from "next/head";
 import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
+import Loading from "../../components/layouts/parts/Loading";
 
 const Users = () => {
   const {data, error} = useSWR<User[] | undefined>("/api/users/all");
   if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteUser = (e: any) => {
     if (!confirm('このユーザを削除してもよろしいですか？')) {
@@ -38,8 +39,7 @@ const Users = () => {
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
         <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
           <main>
-            <div
-              className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
+            <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
               <div className="mb-1 w-full">
                 <div className="mb-4">
                   <nav className="flex mb-5" aria-label="Breadcrumb">

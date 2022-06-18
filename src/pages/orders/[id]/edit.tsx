@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import {Order} from "../../../types/order";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const EditOrder = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Order>();
@@ -18,7 +19,7 @@ const EditOrder = () => {
 
   const {data, error} = useSWR(id ? `${BASE_URL}/orders/${id}` : null);
   if (error) return <div>failed to load orders</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Order> = data => {
     data.quantity = Number(data.quantity);

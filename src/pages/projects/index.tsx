@@ -12,6 +12,7 @@ import ProjectTableRow from "../../components/projects/ProjectTableRow";
 import {BASE_URL} from "../../../lib/utils/const";
 import axios from "axios";
 import Breadcrumbs from "../../components/layouts/Breadcrumbs";
+import Loading from "../../components/layouts/parts/Loading";
 
 const breadcrumbs = [
   {
@@ -31,7 +32,7 @@ const breadcrumbs = [
 const Projects = () => {
   const {data, error} = useSWR<Project[] | undefined>("/api/projects/all");
   if (error) return <div>failed to load projects</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteProject = (e: any) => {
     if (!confirm('このプロジェクトを削除してもよろしいですか？')) {

@@ -6,6 +6,7 @@ import Nav from "../../../components/layouts/Nav";
 import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
+import Loading from "../../../components/layouts/parts/Loading";
 
 const OrderDetail = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const OrderDetail = () => {
 
   const {data, error} = useSWR(id ? `/api/orderDetails/detail?order_detail_id=${id}` : null);
   if (error) return <div>failed to load order...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <Head>

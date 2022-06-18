@@ -11,11 +11,12 @@ import {BASE_URL} from "../../../lib/utils/const";
 import axios from "axios";
 import {Coupon} from "../../types/coupon";
 import CouponTableRow from "../../components/coupons/CouponTableRow";
+import Loading from "../../components/layouts/parts/Loading";
 
 const Coupons = () => {
   const {data, error} = useSWR<Coupon[] | undefined>("/api/coupons/all");
   if (error) return <div>failed to load coupons</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteCoupon = (e: any) => {
     if (!confirm('このクーポンを削除してもよろしいですか？')) {

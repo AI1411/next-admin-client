@@ -8,6 +8,7 @@ import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
 import {BASE_URL} from "../../../../lib/utils/const";
 import {Coupon} from "../../../types/coupon";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const CouponDetail = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const CouponDetail = () => {
 
   const {data, error} = useSWR<Coupon | undefined>(id ? `${BASE_URL}/coupons/${id}` : null);
   if (error) return <div>failed to load coupons</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <Head>

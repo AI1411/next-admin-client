@@ -7,6 +7,7 @@ import {BASE_URL} from "../../../lib/utils/const";
 import Link from 'next/link';
 import {setCookie} from 'nookies';
 import useSWR from "swr";
+import Loading from "../../components/layouts/parts/Loading";
 
 type LoginParams = {
   email: string;
@@ -31,7 +32,7 @@ const Login = () => {
 
   const {data, error} = useSWR("/api/auth/me");
   if (error) return <div>loading...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   if (data.message === 'its me!') {
     router.push('/').then(r => {
       if (!r) {

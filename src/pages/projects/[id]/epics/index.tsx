@@ -12,6 +12,7 @@ import Sidebar from "../../../../components/layouts/Sidebar";
 import EpicTableRow from "../../../../components/epic/EpicTableRow";
 import Paginator from "../../../../components/layouts/Paginator";
 import Footer from "../../../../components/layouts/Footer";
+import Loading from "../../../../components/layouts/parts/Loading";
 
 const Epics = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const Epics = () => {
 
   const {data, error} = useSWR<Epic[] | undefined>(id ? `/api/epics/all?project_id=${id}` : null);
   if (error) return <div>failed to load epics</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteEpic= (e: any) => {
     if (!confirm('このエピックを削除してもよろしいですか？')) {

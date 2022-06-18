@@ -4,13 +4,14 @@ import Sidebar from '../components/layouts/Sidebar'
 import useSWR from "swr";
 import React from "react";
 import {useRouter} from "next/router";
+import Loading from "../components/layouts/parts/Loading";
 
 
 export default function Home() {
   const router = useRouter();
   const {data, error} = useSWR("/api/auth/me");
   if (error) return <div>loading...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   if (data.message === 'unauthorized!') {
     router.push('/login').then(r => {
       if (!r) {

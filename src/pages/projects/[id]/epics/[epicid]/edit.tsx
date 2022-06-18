@@ -10,6 +10,7 @@ import Nav from "../../../../../components/layouts/Nav";
 import Sidebar from "../../../../../components/layouts/Sidebar";
 import Footer from "../../../../../components/layouts/Footer";
 import {BASE_URL} from "../../../../../../lib/utils/const";
+import Loading from "../../../../../components/layouts/parts/Loading";
 
 const EditEpic = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Epic>();
@@ -18,7 +19,7 @@ const EditEpic = () => {
 
   const {data, error} = useSWR<Epic | undefined>(epicid ? `/api/epics/detail?epic_id=${epicid}` : null);
   if (error) return <div>failed to load epics</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Epic> = data => {
     if (!confirm('編集してもよろしいですか？')) {

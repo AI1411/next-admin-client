@@ -7,6 +7,7 @@ import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
 import {Project} from "../../../types/projects";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const ProjectDetail = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const ProjectDetail = () => {
 
   const {data, error} = useSWR<Project | undefined>(id ? `/api/projects/detail?project_id=${id}` : null);
   if (error) return <div>failed to load projects</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <Head>

@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Project} from "../../../types/projects";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const EditProject = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Project>();
@@ -18,7 +19,7 @@ const EditProject = () => {
 
   const {data, error} = useSWR(id ? `${BASE_URL}/projects/${id}` : null);
   if (error) return <div>failed to load projects</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Project> = data => {
     if (!confirm('編集してもよろしいですか？')) {

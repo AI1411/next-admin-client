@@ -11,11 +11,12 @@ import {BASE_URL} from "../../../lib/utils/const";
 import axios from "axios";
 import OrderTableRow from "../../components/orders/OrderTableRow";
 import {Order} from "../../types/order";
+import Loading from "../../components/layouts/parts/Loading";
 
 const Orders = () => {
   const {data, error} = useSWR<Order[] | undefined>("/api/orders/all");
   if (error) return <div>failed to load orders</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteOrder = (e: any) => {
     if (!confirm('この注文を削除してもよろしいですか？')) {

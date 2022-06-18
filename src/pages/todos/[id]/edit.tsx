@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import {Todo} from "../../../types/todo";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const EditTodo = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Todo>();
@@ -18,7 +19,7 @@ const EditTodo = () => {
 
   const {data, error} = useSWR<Todo | undefined>(id ? `${BASE_URL}/todos/${id}` : null);
   if (error) return <div>failed to load todos</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Todo> = data => {
     if (!confirm('編集してもよろしいですか？')) {

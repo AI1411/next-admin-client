@@ -9,6 +9,7 @@ import Link from 'next/link';
 import OrderDetailList from "../../../components/orderDetails/OrderDetailList";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const ProductDetail = () => {
 
   const {data, error} = useSWR(id ? `/api/orders/detail?order_id=${id}` : null);
   if (error) return <div>failed to load order...</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteOrderDetail = (e: any) => {
     if (!confirm('この注文明細を削除してもよろしいですか？')) {

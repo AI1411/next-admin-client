@@ -11,6 +11,7 @@ import {Coupon} from "../../../types/coupon";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {DatePicker} from "../../../components/datepicker";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const CouponEdit = () => {
   const {register, control, handleSubmit, formState: {errors}} = useForm<Coupon>();
@@ -19,7 +20,7 @@ const CouponEdit = () => {
 
   const {data, error} = useSWR<Coupon | undefined>(id ? `${BASE_URL}/coupons/${id}` : null);
   if (error) return <div>failed to load coupons</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Coupon> = data => {
     if (!confirm('編集しますか？')) {

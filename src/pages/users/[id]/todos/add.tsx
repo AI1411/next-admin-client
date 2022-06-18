@@ -11,6 +11,7 @@ import Sidebar from "../../../../components/layouts/Sidebar";
 import Footer from "../../../../components/layouts/Footer";
 import useSWR from "swr";
 import {User} from "../../../../types/user";
+import Loading from "../../../../components/layouts/parts/Loading";
 
 const AddTodoForm = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const AddTodoForm = () => {
 
   const {data, error} = useSWR<User | undefined>(user_id ? `${BASE_URL}/users/${user_id}` : null);
   if (error) return <div>failed to load products</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   return (
     <>

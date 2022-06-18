@@ -12,6 +12,7 @@ import ProductTableRow from "../../components/products/ProductTableRow";
 import {BASE_URL} from "../../../lib/utils/const";
 import axios from "axios";
 import Breadcrumbs from "../../components/layouts/Breadcrumbs";
+import Loading from "../../components/layouts/parts/Loading";
 
 const breadcrumbs = [
   {
@@ -31,7 +32,7 @@ const breadcrumbs = [
 const Products = () => {
   const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
   if (error) return <div>failed to load products</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   const deleteProduct = (e: any) => {
     if (!confirm('この商品を削除してもよろしいですか？')) {

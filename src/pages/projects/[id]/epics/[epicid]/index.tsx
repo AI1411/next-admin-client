@@ -8,6 +8,7 @@ import Link from "next/link";
 import Footer from "../../../../../components/layouts/Footer";
 import {Epic} from "../../../../../types/epic";
 import Checkbox from "../../../../../components/layouts/parts/Checkbox";
+import Loading from "../../../../../components/layouts/parts/Loading";
 
 const EpicDetail = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const EpicDetail = () => {
 
   const {data, error} = useSWR<Epic | undefined>(epicid ? `/api/epics/detail?epic_id=${epicid}` : null);
   if (error) return <div>failed to load epics</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
   return (
     <>
       <Head>

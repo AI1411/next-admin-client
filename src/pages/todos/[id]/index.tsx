@@ -7,6 +7,7 @@ import Sidebar from "../../../components/layouts/Sidebar";
 import Footer from "../../../components/layouts/Footer";
 import Link from 'next/link';
 import {Todo} from "../../../types/todo";
+import Loading from "../../../components/layouts/parts/Loading";
 
 const TodoDetail = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const TodoDetail = () => {
 
   const {data, error} = useSWR<Todo | undefined>(id ? `/api/todos/detail?todo_id=${id}` : null);
   if (error) return <div>failed to load todo</div>
-  if (!data) return <div>loading...</div>
+  if (!data) return <Loading />
 
   return (
     <>
