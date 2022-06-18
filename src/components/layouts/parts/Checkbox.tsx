@@ -2,7 +2,6 @@ import React, {ChangeEvent} from 'react';
 
 interface Props {
   checked?: boolean;
-  defaultChecked?: boolean;
 
   onChange?(event: ChangeEvent): void;
 }
@@ -10,7 +9,6 @@ interface Props {
 const Checkbox: React.FC<Props> = (
   {
     checked,
-    defaultChecked = false,
     onChange = () => {
     }
   }) => (
@@ -19,7 +17,6 @@ const Checkbox: React.FC<Props> = (
       <div className="relative">
         <input
           checked={checked}
-          defaultChecked={defaultChecked}
           onChange={event => onChange(event)}
           id="toogleButton"
           type="checkbox"
