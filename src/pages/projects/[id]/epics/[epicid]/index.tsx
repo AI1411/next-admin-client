@@ -83,9 +83,24 @@ const EpicDetail = () => {
               <div>
                 <label
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">解放フラグ</label>
-                <Checkbox
-                  checked={data.is_open}
-                />
+                <label htmlFor="toogleButton" className="flex items-center cursor-pointer">
+                  <div className="relative">
+                    <input
+                      onChange={() => {}}
+                      checked={data.is_open}
+                      id="toogleButton"
+                      type="checkbox"
+                      className="hidden"
+                    />
+                    <div
+                      className="toggle-path bg-gray-200 w-9 h-5 rounded-full shadow-inner"
+                    />
+                    <div
+                      className="toggle-circle absolute w-3.5 h-3.5 bg-white rounded-full shadow inset-y-0 left-0"
+                    />
+                  </div>
+                </label>
+
               </div>
               <div>
                 <label
@@ -98,7 +113,7 @@ const EpicDetail = () => {
                 />
               </div>
             </div>
-            <Link href={`/epics/${epicid}/edit`}>
+            <Link href={`/projects/${data.project_id}/epics/${epicid}/edit`}>
               <button
                 type="submit"
                 className="text-white bg-green-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-3">Edit

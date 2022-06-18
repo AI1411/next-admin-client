@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "http://localhost:8080",
+    "baseUrl": ".",
     "target": "es5",
     "lib": [
       "dom",
