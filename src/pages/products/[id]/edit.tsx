@@ -11,6 +11,7 @@ import {Product} from "../../../types/product";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import Loading from "../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const EditProduct = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Product>();
@@ -25,6 +26,7 @@ const EditProduct = () => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
     axios.put(`${BASE_URL}/products/${id}`, data).then(() => {
+      toast.success('商品を編集しました。');
       return router.push(`/products/${id}`);
     }).catch((err: any) => {
       console.log(err)

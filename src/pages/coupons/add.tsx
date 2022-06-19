@@ -10,6 +10,7 @@ import {Coupon} from "../../types/coupon";
 import Nav from "../../components/layouts/Nav";
 import Sidebar from "../../components/layouts/Sidebar";
 import {DatePicker} from "../../components/datepicker";
+import {toast} from "react-toastify";
 
 const AddCouponForm = () => {
   const {register, control, handleSubmit, formState: {errors}} = useForm<Coupon>();
@@ -23,6 +24,7 @@ const AddCouponForm = () => {
     data.discount_rate = Number(data.discount_rate);
     data.max_discount_amount = Number(data.max_discount_amount);
     axios.post<Coupon>(`${BASE_URL}/coupons`, data).then(() => {
+      toast.success('クーポンを追加しました。');
       return router.push(`/coupons`);
     }).catch((err: any) => {
       alert(err)

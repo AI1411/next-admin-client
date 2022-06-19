@@ -11,6 +11,7 @@ import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import {User} from "../../../types/user";
 import Loading from "../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const UserEdit = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<User>();
@@ -24,6 +25,7 @@ const UserEdit = () => {
   const onSubmit: SubmitHandler<User> = data => {
     data.age = Number(data.age);
     axios.put(`${BASE_URL}/users/${id}`, data).then(() => {
+      toast.success('ユーザを編集しました。');
       return router.push(`/users/${id}`);
     }).catch((err: any) => {
       console.log(err)

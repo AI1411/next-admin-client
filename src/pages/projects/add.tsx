@@ -9,6 +9,7 @@ import {useRouter} from "next/router";
 import {BASE_URL} from "../../../lib/utils/const";
 import {Project} from "../../types/projects";
 import Link from "next/link";
+import {toast} from "react-toastify";
 
 const AddProjectForm = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Project>();
@@ -18,6 +19,7 @@ const AddProjectForm = () => {
       return;
     }
     axios.post(`${BASE_URL}/projects`, data).then((res: any) => {
+      toast.success('プロジェクトを作成しました。');
       return router.push('/projects');
     }).catch((err: any) => {
       alert(err)

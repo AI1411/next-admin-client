@@ -11,6 +11,7 @@ import {Project} from "../../../types/projects";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import Loading from "../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const EditProject = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Project>();
@@ -26,6 +27,7 @@ const EditProject = () => {
       return;
     }
     axios.put(`${BASE_URL}/projects/${id}`, data).then(() => {
+      toast.success('プロジェクトを編集しました。');
       return router.push(`/projects/${id}`);
     }).catch((err: any) => {
       alert(err)

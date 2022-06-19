@@ -12,6 +12,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {DatePicker} from "../../../components/datepicker";
 import Loading from "../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const CouponEdit = () => {
   const {register, control, handleSubmit, formState: {errors}} = useForm<Coupon>();
@@ -30,6 +31,7 @@ const CouponEdit = () => {
     data.discount_rate = Number(data.discount_rate);
     data.max_discount_amount = Number(data.max_discount_amount);
     axios.put(`${BASE_URL}/coupons/${id}`, data).then(() => {
+      toast.success('クーポンを編集しました。');
       return router.push(`/coupons/${id}`);
     }).catch((err: any) => {
       console.log(err)

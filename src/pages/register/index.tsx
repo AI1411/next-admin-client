@@ -5,6 +5,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useRouter} from "next/router";
 import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
+import {toast} from "react-toastify";
 
 type RegisterParams = {
   first_name: string;
@@ -21,6 +22,7 @@ const Register = () => {
   const onSubmit: SubmitHandler<RegisterParams> = data => {
     data.age = Number(data.age);
     axios.post(`${BASE_URL}/auth/register`, data).then(() => {
+      toast.success('登録しました。');
       return router.push('/users');
     }).catch(err => {
       alert(err);

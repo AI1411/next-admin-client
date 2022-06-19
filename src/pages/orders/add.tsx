@@ -13,6 +13,7 @@ import useSWR from "swr";
 import {User} from "../../types/user";
 import AddOrderDetailForm from "../../components/orderDetails/AddOrderDetailForm";
 import Loading from "../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const AddOrderForm: React.FC = () => {
   const {register, handleSubmit, formState: {errors}, control} = useForm<Order>();
@@ -33,6 +34,7 @@ const AddOrderForm: React.FC = () => {
     data.quantity = Number(data.quantity);
     data.total_price = Number(data.total_price);
     axios.post(`${BASE_URL}/orders`, data).then((res: any) => {
+      toast.success('注文を作成しました。');
       return router.push('/orders');
     }).catch((err: any) => {
       alert(err)

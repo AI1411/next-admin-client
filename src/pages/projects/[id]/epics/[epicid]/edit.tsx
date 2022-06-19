@@ -11,6 +11,7 @@ import Sidebar from "../../../../../components/layouts/Sidebar";
 import Footer from "../../../../../components/layouts/Footer";
 import {BASE_URL} from "../../../../../../lib/utils/const";
 import Loading from "../../../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const EditEpic = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Epic>();
@@ -26,6 +27,7 @@ const EditEpic = () => {
       return;
     }
     axios.put(`${BASE_URL}/epics/${epicid}`, data).then(() => {
+      toast.success('エピックを編集しました。');
       return router.push(`projects/${data.project_id}/epics/${epicid}`);
     }).catch((err: any) => {
       alert(err)

@@ -12,6 +12,7 @@ import Footer from "../../../../components/layouts/Footer";
 import useSWR from "swr";
 import {User} from "../../../../types/user";
 import Loading from "../../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const AddTodoForm = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const AddTodoForm = () => {
   const onSubmit: SubmitHandler<Todo> = data => {
     data.user_id = String(user_id);
     axios.post(`${BASE_URL}/todos`, data).then((res: any) => {
+      toast.success('タスクを作成しました。');
       return router.push(`/users/${user_id}`);
     }).catch((err: any) => {
       alert(err)

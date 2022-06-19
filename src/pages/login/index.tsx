@@ -8,6 +8,7 @@ import Link from 'next/link';
 import {setCookie} from 'nookies';
 import useSWR from "swr";
 import Loading from "../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 type LoginParams = {
   email: string;
@@ -24,6 +25,7 @@ const Login = () => {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       });
+      toast.success('ログインしました。');
       return router.push('/users');
     }).catch(err => {
       alert(err);

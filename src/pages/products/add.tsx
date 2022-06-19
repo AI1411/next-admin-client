@@ -7,6 +7,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import axios from 'axios';
 import {useRouter} from "next/router";
 import {BASE_URL} from "../../../lib/utils/const";
+import {toast} from "react-toastify";
 
 type Product = {
   product_name: string;
@@ -23,6 +24,7 @@ const AddProductForm = () => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
     axios.post(`${BASE_URL}/products`, data).then((res: any) => {
+      toast.success('商品を追加しました。');
       return router.push('/products');
     }).catch((err: any) => {
       console.log(err)

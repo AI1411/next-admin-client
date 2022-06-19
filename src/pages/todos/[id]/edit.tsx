@@ -11,6 +11,7 @@ import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import {Todo} from "../../../types/todo";
 import Loading from "../../../components/layouts/parts/Loading";
+import {toast} from "react-toastify";
 
 const EditTodo = () => {
   const {register, handleSubmit, formState: {errors}} = useForm<Todo>();
@@ -26,6 +27,7 @@ const EditTodo = () => {
       return;
     }
     axios.put(`${BASE_URL}/todos/${id}`, data).then(() => {
+      toast.success('タスクを編集しました。');
       return router.push(`/todos/${id}`);
     }).catch((err: any) => {
       alert(err)
