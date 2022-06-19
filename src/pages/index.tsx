@@ -26,6 +26,9 @@ export default function Home() {
         <title>ホーム</title>
       </Head>
       <Nav/>
+      <h1>
+        Welcome to <a href="https://nextjs.org">Next.js!</a>
+      </h1>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar/>
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>

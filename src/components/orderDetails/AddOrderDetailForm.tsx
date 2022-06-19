@@ -2,6 +2,7 @@ import React from 'react';
 import {ORDER_STATUS} from "../../../lib/enums/status";
 import useSWR from "swr";
 import {Product} from "../../types/product";
+import Loading from "../layouts/parts/Loading";
 
 const AddOrderDetailForm = ({index, register, errors}: any) => {
   const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
