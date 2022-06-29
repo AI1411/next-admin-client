@@ -3,22 +3,21 @@ import Nav from '../components/layouts/Nav'
 import Sidebar from '../components/layouts/Sidebar'
 import useSWR from "swr";
 import React from "react";
-import {useRouter} from "next/router";
-import Loading from "../components/layouts/parts/Loading";
-
+import {fetcher} from "../utils/fetcher";
+import {User} from "../types/user";
 
 export default function Home() {
-  const router = useRouter();
-  const {data, error} = useSWR("/api/auth/me");
-  if (error) return <div>loading...</div>
-  if (!data) return <Loading />
-  if (data.message === 'unauthorized!') {
-    router.push('/login').then(r => {
-      if (!r) {
-        alert('遷移失敗')
-      }
-    });
-  }
+  const {data, error} = useSWR([
+    '/api/products/all',
+    '/api/orders/all',
+    '/api/projects/all',
+    '/api/users/all',
+  ], fetcher);
+
+  const products = data ? data[0] : [];
+  const orders = data ? data[1] : [];
+  const projects = data ? data[2] : [];
+  const users = data ? data[3] : [];
 
   return (
     <div>
@@ -189,10 +188,12 @@ export default function Home() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                                          <span
-                                            className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">2,340</span>
-                      <h3 className="text-base font-normal text-gray-500">New products this
-                        week</h3>
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                         {products.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All Products
+                      </h3>
                     </div>
                     <div
                       className="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
@@ -209,9 +210,12 @@ export default function Home() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                                          <span
-                                            className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">5,355</span>
-                      <h3 className="text-base font-normal text-gray-500">Visitors this week</h3>
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {orders.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All Orders
+                      </h3>
                     </div>
                     <div
                       className="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
@@ -228,10 +232,34 @@ export default function Home() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                                          <span
-                                            className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">385</span>
-                      <h3 className="text-base font-normal text-gray-500">User signups this
-                        week</h3>
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {projects.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All Projects
+                      </h3>
+                    </div>
+                    <div
+                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
+                      -2.7%
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd"
+                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {users.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All Users
+                      </h3>
                     </div>
                     <div
                       className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
@@ -258,121 +286,30 @@ export default function Home() {
                   </div>
                   <div className="flow-root">
                     <ul role="list" className="divide-y divide-gray-200">
-                      <li className="py-3 sm:py-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <img className="h-8 w-8 rounded-full"
-                                 src="https://demo.themesberg.com/windster/images/users/neil-sims.png"
-                                 alt="Neil image"/>
+                      {users.map((user: User) =>
+                        <li className="py-3 sm:py-4" key={user.id}>
+                          <div className="flex items-center space-x-4">
+                            <div className="flex-shrink-0">
+                              <img className="h-8 w-8 rounded-full"
+                                   src="https://demo.themesberg.com/windster/images/users/neil-sims.png"
+                                   alt="Neil image"/>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">
+                                {user.last_name + ' ' + user.first_name}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate">
+                                <a className="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">
+                                  {user.email}
+                                </a>
+                              </p>
+                            </div>
+                            <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                              {user.age}
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              Neil Sims
-                            </p>
-                            <p className="text-sm text-gray-500 truncate">
-                              <a href="/cdn-cgi/l/email-protection"
-                                 className="__cf_email__"
-                                 data-cfemail="17727a767e7b57607e7973646372653974787a">[email&#160;protected]</a>
-                            </p>
-                          </div>
-                          <div
-                            className="inline-flex items-center text-base font-semibold text-gray-900">
-                            $320
-                          </div>
-                        </div>
-                      </li>
-                      <li className="py-3 sm:py-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <img className="h-8 w-8 rounded-full"
-                                 src="https://demo.themesberg.com/windster/images/users/bonnie-green.png"
-                                 alt="Neil image"/>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              Bonnie Green
-                            </p>
-                            <p className="text-sm text-gray-500 truncate">
-                              <a href="/cdn-cgi/l/email-protection"
-                                 className="__cf_email__"
-                                 data-cfemail="d4b1b9b5bdb894a3bdbab0a7a0b1a6fab7bbb9">[email&#160;protected]</a>
-                            </p>
-                          </div>
-                          <div
-                            className="inline-flex items-center text-base font-semibold text-gray-900">
-                            $3467
-                          </div>
-                        </div>
-                      </li>
-                      <li className="py-3 sm:py-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <img className="h-8 w-8 rounded-full"
-                                 src="https://demo.themesberg.com/windster/images/users/michael-gough.png"
-                                 alt="Neil image"/>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              Michael Gough
-                            </p>
-                            <p className="text-sm text-gray-500 truncate">
-                              <a href="/cdn-cgi/l/email-protection"
-                                 className="__cf_email__"
-                                 data-cfemail="57323a363e3b17203e3933242332257934383a">[email&#160;protected]</a>
-                            </p>
-                          </div>
-                          <div
-                            className="inline-flex items-center text-base font-semibold text-gray-900">
-                            $67
-                          </div>
-                        </div>
-                      </li>
-                      <li className="py-3 sm:py-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <img className="h-8 w-8 rounded-full"
-                                 src="https://demo.themesberg.com/windster/images/users/thomas-lean.png"
-                                 alt="Neil image"/>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              Thomes Lean
-                            </p>
-                            <p className="text-sm text-gray-500 truncate">
-                              <a href="/cdn-cgi/l/email-protection"
-                                 className="__cf_email__"
-                                 data-cfemail="284d45494144685f41464c5b5c4d5a064b4745">[email&#160;protected]</a>
-                            </p>
-                          </div>
-                          <div
-                            className="inline-flex items-center text-base font-semibold text-gray-900">
-                            $2367
-                          </div>
-                        </div>
-                      </li>
-                      <li className="pt-3 sm:pt-4 pb-0">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <img className="h-8 w-8 rounded-full"
-                                 src="https://demo.themesberg.com/windster/images/users/lana-byrd.png"
-                                 alt="Neil image"/>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              Lana Byrd
-                            </p>
-                            <p className="text-sm text-gray-500 truncate">
-                              <a href="/cdn-cgi/l/email-protection"
-                                 className="__cf_email__"
-                                 data-cfemail="a2c7cfc3cbcee2d5cbccc6d1d6c7d08cc1cdcf">[email&#160;protected]</a>
-                            </p>
-                          </div>
-                          <div
-                            className="inline-flex items-center text-base font-semibold text-gray-900">
-                            $367
-                          </div>
-                        </div>
-                      </li>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>
