@@ -7,6 +7,7 @@ export type Order = {
   total_price: number;
   order_status: string;
   remarks: string;
+  created_at: string;
 
   order_details: OrderDetail[];
 }

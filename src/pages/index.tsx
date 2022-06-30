@@ -5,6 +5,9 @@ import useSWR from "swr";
 import React from "react";
 import {fetcher} from "../utils/fetcher";
 import {User} from "../types/user";
+import {Order} from "../types/order";
+import Date from "../components/date";
+import Link from 'next/link';
 
 export default function Home() {
   const {data, error} = useSWR([
@@ -19,15 +22,20 @@ export default function Home() {
   const projects = data ? data[2] : [];
   const users = data ? data[3] : [];
 
+  const getTotalSales = () => {
+    let totalPrice = 0;
+    orders.map((order: Order) => {
+      totalPrice += order.total_price;
+    })
+    return totalPrice;
+  }
+
   return (
     <div>
       <Head>
         <title>ホーム</title>
       </Head>
       <Nav/>
-      <h1>
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
       <div className="flex overflow-hidden bg-white pt-16">
         <Sidebar/>
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
@@ -38,9 +46,10 @@ export default function Home() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-shrink-0">
-                                          <span
-                                            className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">$45,385</span>
-                      <h3 className="text-base font-normal text-gray-500">Sales this week</h3>
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {getTotalSales()}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">Total Sales</h3>
                     </div>
                     <div
                       className="flex items-center justify-end flex-1 text-green-500 text-base font-bold">
@@ -58,14 +67,19 @@ export default function Home() {
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">Latest
-                        Transactions</h3>
-                      <span className="text-base font-normal text-gray-500">This is a list of latest transactions</span>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        Latest Orders
+                      </h3>
+                      <span className="text-base font-normal text-gray-500">
+                        This is a list of latest orders
+                      </span>
                     </div>
                     <div className="flex-shrink-0">
-                      <a href="#"
-                         className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">View
-                        all</a>
+                      <Link href={`/orders`}>
+                        <a className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">
+                          View all
+                        </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="flex flex-col mt-8">
@@ -77,105 +91,43 @@ export default function Home() {
                             <tr>
                               <th scope="col"
                                   className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Transaction
+                                注文ID
                               </th>
                               <th scope="col"
                                   className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date & Time
+                                注文日
                               </th>
                               <th scope="col"
                                   className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Amount
+                                合計金額
+                              </th>
+                              <th scope="col"
+                                  className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                注文ステータス
                               </th>
                             </tr>
                             </thead>
                             <tbody className="bg-white">
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span
-                                className="font-semibold">Bonnie Green</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 23 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $2300
-                              </td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td
-                                className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment refund to <span
-                                className="font-semibold">#00910</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 23 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                -$670
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment failed from <span
-                                className="font-semibold">#087651</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 18 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $234
-                              </td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td
-                                className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment from <span
-                                className="font-semibold">Lana Byrd</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 15 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $5000
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span
-                                className="font-semibold">Jese Leos</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 15 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $2300
-                              </td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td
-                                className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment from <span className="font-semibold">THEMESBERG LLC</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 11 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $560
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span
-                                className="font-semibold">Lana Lysle</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                Apr 6 ,2021
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                $1437
-                              </td>
-                            </tr>
+                            {orders.map((order: Order) =>
+                              <tr key={order.id}>
+                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
+                                  <Link href={`/orders/${order.id}`}>
+                                    <a className={`underline text-blue-400`}>{order.id.substring(0, 8)}</a>
+                                  </Link>
+                                </td>
+                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
+                                  <Date
+                                    dateString={order.created_at}
+                                  />
+                                </td>
+                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                  {order.total_price}
+                                </td>
+                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                  {order.order_status}
+                                </td>
+                              </tr>
+                            )}
                             </tbody>
                           </table>
                         </div>
