@@ -1,8 +1,9 @@
 import Head from 'next/head'
+import dynamic from "next/dynamic";
 import Nav from '../components/layouts/Nav'
 import Sidebar from '../components/layouts/Sidebar'
 import useSWR from "swr";
-import React from "react";
+import React, {FC} from "react";
 import {fetcher} from "../utils/fetcher";
 import {User} from "../types/user";
 import {Order} from "../types/order";
@@ -11,17 +12,23 @@ import Link from 'next/link';
 import DoughnutChart from "../components/charts/DoughnutChart";
 
 export default function Home() {
+  const SankeyChart: FC = () => {
+    const Sankey: any = dynamic(() => import("../components/charts/Sankey"));
+    return <Sankey />;
+  };
   const {data, error} = useSWR([
     '/api/products/all',
     '/api/orders/all',
     '/api/projects/all',
     '/api/users/all',
+    '/api/coupons/all',
   ], fetcher);
 
   const products = data ? data[0] : [];
   const orders = data ? data[1] : [];
   const projects = data ? data[2] : [];
   const users = data ? data[3] : [];
+  const coupons = data ? data[4] : [];
 
   const getTotalSales = () => {
     let totalPrice = 0;
@@ -44,7 +51,7 @@ export default function Home() {
           <main>
             <div className="pt-6 px-4">
               <div className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
+                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-2">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-shrink-0">
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
@@ -226,6 +233,50 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {coupons.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All coupons
+                      </h3>
+                    </div>
+                    <div
+                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
+                      -2.7%
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd"
+                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                        {users.length}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        All Users
+                      </h3>
+                    </div>
+                    <div
+                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
+                      -2.7%
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd"
+                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
                 <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
@@ -266,11 +317,21 @@ export default function Home() {
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
                 <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
                   <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
                     Acquisition Overview
                   </h3>
-                  <DoughnutChart />
+                  <DoughnutChart/>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
+                <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
+                  <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
+                    Acquisition Overview
+                  </h3>
+                  <SankeyChart />
                 </div>
               </div>
             </div>
