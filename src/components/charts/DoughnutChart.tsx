@@ -1,8 +1,8 @@
-import type {NextPage} from "next";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Doughnut} from "react-chartjs-2";
+import {FC} from "react";
 
-const DoughnutChart: NextPage = () => {
+const DoughnutChart: FC = () => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
   const data = {

@@ -31,8 +31,6 @@ export default function Home() {
     return totalPrice;
   }
 
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div>
       <Head>
