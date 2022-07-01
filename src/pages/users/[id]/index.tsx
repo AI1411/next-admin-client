@@ -16,7 +16,7 @@ const UserDetail = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR<User | undefined>(id ? `${BASE_URL}/users/${id}` : null);
+  const {data, error} = useSWR<User | undefined>(id ? `/api/users/detail?id=${id}` : null);
   if (error) return <div>failed to load products</div>
   if (!data) return <Loading />
 
