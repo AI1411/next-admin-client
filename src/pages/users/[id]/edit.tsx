@@ -18,7 +18,7 @@ const UserEdit = () => {
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? `${BASE_URL}/users/${id}` : null);
+  const {data, error} = useSWR<User | undefined>(id ? `/api/users/detail?id=${id}` : null);
   if (error) return <div>failed to load user</div>
   if (!data) return <Loading />
 
