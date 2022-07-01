@@ -10,11 +10,12 @@ import {Order} from "../types/order";
 import Date from "../components/date";
 import Link from 'next/link';
 import DoughnutChart from "../components/charts/DoughnutChart";
+import ItemCounter from "../parts/ItemCounter";
 
 export default function Home() {
   const SankeyChart: FC = () => {
     const Sankey: any = dynamic(() => import("../components/charts/Sankey"));
-    return <Sankey />;
+    return <Sankey/>;
   };
   const {data, error} = useSWR([
     '/api/products/all',
@@ -29,6 +30,15 @@ export default function Home() {
   const projects = data ? data[2] : [];
   const users = data ? data[3] : [];
   const coupons = data ? data[4] : [];
+
+  const allItems = [
+    {id: 1, items: products, up_down_rate: 16, label: 'Products', is_positive: true},
+    {id: 2, items: orders, up_down_rate: 16, label: 'orders', is_positive: false},
+    {id: 3, items: projects, up_down_rate: 16, label: 'projects', is_positive: true},
+    {id: 4, items: users, up_down_rate: 16, label: 'users', is_positive: false},
+    {id: 5, items: coupons, up_down_rate: 16, label: 'coupons', is_positive: true},
+    {id: 6, items: users, up_down_rate: 16, label: 'users', is_positive: false}
+  ]
 
   const getTotalSales = () => {
     let totalPrice = 0;
@@ -145,138 +155,15 @@ export default function Home() {
                 </div>
               </div>
               <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                         {products.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All Products
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
-                      14.6%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {orders.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All Orders
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
-                      32.9%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {projects.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All Projects
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
-                      -2.7%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {users.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All Users
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
-                      -2.7%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {coupons.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All coupons
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
-                      -2.7%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {users.length}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        All Users
-                      </h3>
-                    </div>
-                    <div
-                      className="ml-5 w-0 flex items-center justify-end flex-1 text-red-500 text-base font-bold">
-                      -2.7%
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                           xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd"
-                              d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
+                {allItems.map((item: any) =>
+                  <ItemCounter
+                    key={item.id}
+                    items={item.items}
+                    up_down_rate={item.up_down_rate}
+                    label={item.label}
+                    is_positive={item.is_positive}
+                  />
+                )}
               </div>
               <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
                 <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
@@ -318,20 +205,22 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
-                <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
-                  <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
-                    Acquisition Overview
-                  </h3>
-                  <DoughnutChart/>
+              <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
+                  <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
+                    <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
+                      Acquisition Overview
+                    </h3>
+                    <DoughnutChart/>
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
-                <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
-                  <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
-                    Acquisition Overview
-                  </h3>
-                  <SankeyChart />
+                <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
+                  <div className="bg-white shadow rounded-lg mt-4 p-4 sm:p-6 xl:p-8 ">
+                    <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">
+                      Acquisition Overview
+                    </h3>
+                    <SankeyChart/>
+                  </div>
                 </div>
               </div>
             </div>
