@@ -18,7 +18,7 @@ const Users = () => {
   if (data === 'unauthorized!') {
     return <UnAuthorized/>
   }
-  if (error) {}return <div>failed to load</div>;
+  if (error) return <div>failed to load</div>;
   if (!data) return <Loading />
 
   const deleteUser = (e: any) => {
