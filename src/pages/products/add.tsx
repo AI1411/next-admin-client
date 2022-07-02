@@ -8,6 +8,8 @@ import axios from 'axios';
 import {useRouter} from "next/router";
 import {BASE_URL} from "../../../lib/utils/const";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
 type Product = {
   product_name: string;
@@ -17,13 +19,24 @@ type Product = {
   quantity: number;
 }
 
-const AddProductForm = () => {
+const AddProductForm = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}} = useForm<Product>();
   const router = useRouter();
   const onSubmit: SubmitHandler<Product> = data => {
+    if (!confirm('作成してもよろしいですか？')) {
+      return;
+    }
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    axios.post(`${BASE_URL}/products`, data).then((res: any) => {
+    const cookie = parseCookies(ctx);
+    axios.post(`${BASE_URL}/products`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then((res: any) => {
       toast.success('商品を追加しました。');
       return router.push('/products');
     }).catch((err: any) => {

@@ -13,6 +13,8 @@ import {BASE_URL} from "../../../lib/utils/const";
 import axios from "axios";
 import Breadcrumbs from "../../components/layouts/Breadcrumbs";
 import Loading from "../../components/layouts/parts/Loading";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
 const breadcrumbs = [
   {
@@ -29,7 +31,7 @@ const breadcrumbs = [
   }
 ]
 
-const Products = () => {
+const Products = (ctx?: NextPageContext) => {
   const {data, error} = useSWR<Product[] | undefined>("/api/products/all");
   if (error) return <div>failed to load products</div>
   if (!data) return <Loading />
@@ -39,7 +41,15 @@ const Products = () => {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/products/${id}`).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.delete(`${BASE_URL}/products/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       alert('商品を削除しました');
     }).catch(err => {
       alert(err);
