@@ -105,7 +105,7 @@ const UserDetail = () => {
                 user={data}
                 handleDelete={deleteTodo}
               />
-              : <div>test</div>}
+              : <div>todoがありません</div>}
           </main>
           <Footer/>
         </div>
