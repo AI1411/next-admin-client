@@ -13,8 +13,11 @@ import {BASE_URL} from "../../../lib/utils/const";
 import Loading from "../../components/layouts/parts/Loading";
 
 const Users = () => {
-  const {data, error} = useSWR<User[] | undefined>("/api/users/all");
-  if (error) return <div>failed to load</div>
+  const {data, error} = useSWR<User[] | undefined | any>("/api/users/all");
+  if (data === 'unauthorized!') {
+    return <div>unauthorized!</div>
+  }
+  if (error) {}return <div>failed to load</div>;
   if (!data) return <Loading />
 
   const deleteUser = (e: any) => {
@@ -138,7 +141,7 @@ const Users = () => {
                       </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                      {data.map((user: User) =>
+                      {data?.map((user: User) =>
                         <UserTableRow handleDelete={deleteUser} user={user} key={user.id}/>
                       )}
                       </tbody>

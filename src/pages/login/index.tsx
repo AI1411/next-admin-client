@@ -5,18 +5,20 @@ import {useRouter} from "next/router";
 import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 import Link from 'next/link';
-import {setCookie} from 'nookies';
+import {parseCookies, setCookie} from 'nookies';
 import useSWR from "swr";
 import Loading from "../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {NextPageContext} from "next";
 
 type LoginParams = {
   email: string;
   password: string;
 }
 
-const Login = () => {
+const Login = (ctx?: NextPageContext) => {
   const router = useRouter();
+  const cookie = parseCookies(ctx);
 
   const {register, handleSubmit, formState: {errors}} = useForm<LoginParams>();
   const onSubmit: SubmitHandler<LoginParams> = async data => {
@@ -31,17 +33,6 @@ const Login = () => {
       alert(err);
     })
   };
-
-  const {data, error} = useSWR("/api/auth/me");
-  if (error) return <div>loading...</div>
-  if (!data) return <Loading />
-  if (data.message === 'its me!') {
-    router.push('/').then(r => {
-      if (!r) {
-        alert('遷移失敗')
-      }
-    });
-  }
   return (
     <div>
       <Head>

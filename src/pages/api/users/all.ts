@@ -7,5 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       Authorization: `Bearer ${req.cookies.jwt}`
     }
   }).then(res => res.json());
+  if (response.message === 'unauthorized!') {
+    res.status(401).json(response.message);
+  }
   res.status(200).json(response.users);
 }
