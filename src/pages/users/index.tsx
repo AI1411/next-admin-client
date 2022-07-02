@@ -12,8 +12,10 @@ import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 import Loading from "../../components/layouts/parts/Loading";
 import UnAuthorized from "../401";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const Users = () => {
+const Users = (ctx?: NextPageContext) => {
   const {data, error} = useSWR<User[] | undefined | any>("/api/users/all");
   if (data === 'unauthorized!') {
     return <UnAuthorized/>
@@ -26,7 +28,15 @@ const Users = () => {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/users/${id}`).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.delete(`${BASE_URL}/users/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       alert('ユーザを削除しました');
     }).catch(err => {
       alert(err);

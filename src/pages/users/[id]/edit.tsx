@@ -12,8 +12,10 @@ import {BASE_URL} from "../../../../lib/utils/const";
 import {User} from "../../../types/user";
 import Loading from "../../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const UserEdit = () => {
+const UserEdit = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}} = useForm<User>();
   const router = useRouter();
   const {id} = router.query;
@@ -23,8 +25,19 @@ const UserEdit = () => {
   if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<User> = data => {
+    if (!confirm('編集してもよろしいですか？')) {
+      return;
+    }
+    const cookie = parseCookies(ctx);
     data.age = Number(data.age);
-    axios.put(`${BASE_URL}/users/${id}`, data).then(() => {
+    axios.put(`${BASE_URL}/users/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       toast.success('ユーザを編集しました。');
       return router.push(`/users/${id}`);
     }).catch((err: any) => {
