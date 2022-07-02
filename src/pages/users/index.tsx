@@ -11,11 +11,12 @@ import Head from "next/head";
 import axios from "axios";
 import {BASE_URL} from "../../../lib/utils/const";
 import Loading from "../../components/layouts/parts/Loading";
+import UnAuthorized from "../401";
 
 const Users = () => {
   const {data, error} = useSWR<User[] | undefined | any>("/api/users/all");
   if (data === 'unauthorized!') {
-    return <div>unauthorized!</div>
+    return <UnAuthorized/>
   }
   if (error) {}return <div>failed to load</div>;
   if (!data) return <Loading />
