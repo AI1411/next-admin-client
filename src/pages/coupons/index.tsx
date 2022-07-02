@@ -12,8 +12,10 @@ import axios from "axios";
 import {Coupon} from "../../types/coupon";
 import CouponTableRow from "../../components/coupons/CouponTableRow";
 import Loading from "../../components/layouts/parts/Loading";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const Coupons = () => {
+const Coupons = (ctx?: NextPageContext) => {
   const {data, error} = useSWR<Coupon[] | undefined>("/api/coupons/all");
   if (error) return <div>failed to load coupons</div>
   if (!data) return <Loading />
@@ -23,7 +25,15 @@ const Coupons = () => {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/coupons/${id}`).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.delete(`${BASE_URL}/coupons/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       alert('クーポンを削除しました');
     }).catch(err => {
       alert(err);

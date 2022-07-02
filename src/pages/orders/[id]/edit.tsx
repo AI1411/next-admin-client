@@ -12,20 +12,33 @@ import {BASE_URL} from "../../../../lib/utils/const";
 import {Order} from "../../../types/order";
 import Loading from "../../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const EditOrder = () => {
+const EditOrder = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}} = useForm<Order>();
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? `${BASE_URL}/orders/${id}` : null);
+  const {data, error} = useSWR(id ? `/api/orders/detail?order_id=${id}` : null);
   if (error) return <div>failed to load orders</div>
   if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Order> = data => {
+    if (!confirm('編集してもよろしいですか？')) {
+      return;
+    }
     data.quantity = Number(data.quantity);
     data.total_price = Number(data.total_price);
-    axios.put(`${BASE_URL}/orders/${id}`, data).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.put(`${BASE_URL}/orders/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       toast.success('注文を編集しました。');
       return router.push(`/orders/${id}`);
     }).catch((err: any) => {

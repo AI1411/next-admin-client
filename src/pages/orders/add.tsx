@@ -14,8 +14,10 @@ import {User} from "../../types/user";
 import AddOrderDetailForm from "../../components/orderDetails/AddOrderDetailForm";
 import Loading from "../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const AddOrderForm: React.FC = () => {
+const AddOrderForm = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}, control} = useForm<Order>();
   const {fields, append} = useFieldArray({
     control,
@@ -33,7 +35,15 @@ const AddOrderForm: React.FC = () => {
     }
     data.quantity = Number(data.quantity);
     data.total_price = Number(data.total_price);
-    axios.post(`${BASE_URL}/orders`, data).then((res: any) => {
+    const cookie = parseCookies(ctx);
+    axios.post(`${BASE_URL}/orders`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then((res: any) => {
       toast.success('注文を作成しました。');
       return router.push('/orders');
     }).catch((err: any) => {
@@ -52,7 +62,7 @@ const AddOrderForm: React.FC = () => {
 
   const {data, error} = useSWR<User[] | undefined>("/api/users/all");
   if (error) return <div>loading...</div>
-  if (!data) return <Loading />
+  if (!data) return <Loading/>
 
   return (
     <>

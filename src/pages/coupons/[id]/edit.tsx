@@ -13,13 +13,15 @@ import axios from "axios";
 import {DatePicker} from "../../../components/datepicker";
 import Loading from "../../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const CouponEdit = () => {
+const CouponEdit = (ctx?: NextPageContext) => {
   const {register, control, handleSubmit, formState: {errors}} = useForm<Coupon>();
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR<Coupon | undefined>(id ? `${BASE_URL}/coupons/${id}` : null);
+  const {data, error} = useSWR(id ? `/api/coupons/detail?coupon_id=${id}` : null);
   if (error) return <div>failed to load coupons</div>
   if (!data) return <Loading />
 
@@ -30,7 +32,15 @@ const CouponEdit = () => {
     data.discount_amount = Number(data.discount_amount);
     data.discount_rate = Number(data.discount_rate);
     data.max_discount_amount = Number(data.max_discount_amount);
-    axios.put(`${BASE_URL}/coupons/${id}`, data).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.put(`${BASE_URL}/coupons/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       toast.success('クーポンを編集しました。');
       return router.push(`/coupons/${id}`);
     }).catch((err: any) => {

@@ -12,8 +12,10 @@ import axios from "axios";
 import OrderTableRow from "../../components/orders/OrderTableRow";
 import {Order} from "../../types/order";
 import Loading from "../../components/layouts/parts/Loading";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const Orders = () => {
+const Orders = (ctx?: NextPageContext) => {
   const {data, error} = useSWR<Order[] | undefined>("/api/orders/all");
   if (error) return <div>failed to load orders</div>
   if (!data) return <Loading />
@@ -23,7 +25,15 @@ const Orders = () => {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/orders/${id}`).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.delete(`${BASE_URL}/orders/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       alert('注文を削除しました');
     }).catch(err => {
       alert(err);

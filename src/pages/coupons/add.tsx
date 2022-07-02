@@ -11,8 +11,10 @@ import Nav from "../../components/layouts/Nav";
 import Sidebar from "../../components/layouts/Sidebar";
 import {DatePicker} from "../../components/datepicker";
 import {toast} from "react-toastify";
+import {NextPageContext} from "next/types";
+import {parseCookies} from "nookies";
 
-const AddCouponForm = () => {
+const AddCouponForm = (ctx?: NextPageContext) => {
   const {register, control, handleSubmit, formState: {errors}} = useForm<Coupon>();
   const router = useRouter();
 
@@ -23,7 +25,15 @@ const AddCouponForm = () => {
     data.discount_amount = Number(data.discount_amount);
     data.discount_rate = Number(data.discount_rate);
     data.max_discount_amount = Number(data.max_discount_amount);
-    axios.post<Coupon>(`${BASE_URL}/coupons`, data).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.post<Coupon>(`${BASE_URL}/coupons`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       toast.success('クーポンを追加しました。');
       return router.push(`/coupons`);
     }).catch((err: any) => {

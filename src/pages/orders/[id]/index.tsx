@@ -10,8 +10,10 @@ import OrderDetailList from "../../../components/orderDetails/OrderDetailList";
 import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import Loading from "../../../components/layouts/parts/Loading";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const ProductDetail = () => {
+const ProductDetail = (ctx?: NextPageContext) => {
   const router = useRouter();
   const {id} = router.query;
 
@@ -24,7 +26,15 @@ const ProductDetail = () => {
       return;
     }
     const id = e.target.value;
-    axios.delete(`${BASE_URL}/orderDetails/${id}`).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.delete(`${BASE_URL}/orderDetails/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       alert('注文を削除しました');
     }).catch(err => {
       alert(err);

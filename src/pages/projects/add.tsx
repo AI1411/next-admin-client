@@ -10,15 +10,25 @@ import {BASE_URL} from "../../../lib/utils/const";
 import {Project} from "../../types/projects";
 import Link from "next/link";
 import {toast} from "react-toastify";
+import {NextPageContext} from "next";
+import {parseCookies} from "nookies";
 
-const AddProjectForm = () => {
+const AddProjectForm = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}} = useForm<Project>();
   const router = useRouter();
+  const cookie = parseCookies(ctx);
   const onSubmit: SubmitHandler<Project> = data => {
     if (!confirm('プロジェクトを追加しますか？')) {
       return;
     }
-    axios.post(`${BASE_URL}/projects`, data).then((res: any) => {
+    axios.post(`${BASE_URL}/projects`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then((res: any) => {
       toast.success('プロジェクトを作成しました。');
       return router.push('/projects');
     }).catch((err: any) => {
