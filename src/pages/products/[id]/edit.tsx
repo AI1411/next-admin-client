@@ -12,20 +12,33 @@ import axios from "axios";
 import {BASE_URL} from "../../../../lib/utils/const";
 import Loading from "../../../components/layouts/parts/Loading";
 import {toast} from "react-toastify";
+import {parseCookies} from "nookies";
+import {NextPageContext} from "next";
 
-const EditProduct = () => {
+const EditProduct = (ctx?: NextPageContext) => {
   const {register, handleSubmit, formState: {errors}} = useForm<Product>();
   const router = useRouter();
   const {id} = router.query;
 
-  const {data, error} = useSWR(id ? `${BASE_URL}/products/${id}` : null);
+  const {data, error} = useSWR<Product | undefined>(id ? `/api/products/detail?product_id=${id}` : null);
   if (error) return <div>failed to load products</div>
   if (!data) return <Loading />
 
   const onSubmit: SubmitHandler<Product> = data => {
+    if (!confirm('編集してもよろしいですか？')) {
+      return;
+    }
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    axios.put(`${BASE_URL}/products/${id}`, data).then(() => {
+    const cookie = parseCookies(ctx);
+    axios.put(`${BASE_URL}/products/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cookie.jwt}`
+      },
+      withCredentials: true,
+    }).then(() => {
       toast.success('商品を編集しました。');
       return router.push(`/products/${id}`);
     }).catch((err: any) => {
@@ -35,7 +48,7 @@ const EditProduct = () => {
   return (
     <>
       <Head>
-        <title>商品詳細</title>
+        <title>商品編集</title>
       </Head>
       <Nav/>
       <div className="flex overflow-hidden bg-white pt-16">
@@ -43,7 +56,7 @@ const EditProduct = () => {
         <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"/>
         <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
           <main className="py-10 px-10">
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">商品詳細</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">商品編集</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
