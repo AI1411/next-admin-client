@@ -130,15 +130,7 @@ const Projects = (ctx?: NextPageContext) => {
                         </th>
                         <th scope="col"
                             className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                          価格
-                        </th>
-                        <th scope="col"
-                            className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                           説明
-                        </th>
-                        <th scope="col"
-                            className="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                          数量
                         </th>
                         <th scope="col" className="p-4">
                         </th>
