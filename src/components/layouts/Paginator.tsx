@@ -1,6 +1,37 @@
-import React from 'react';
+import React, {MouseEventHandler} from 'react';
+import {ORDER_STATUS} from "../../../lib/enums/status";
 
-const Paginator = () => {
+type Props = {
+  onclickPrevious?: MouseEventHandler;
+  onclickNext?: MouseEventHandler;
+  onChangeLimit?: any
+}
+
+type selectValuesProps = {
+  id: number | string;
+  value: number | string;
+  label: string;
+}
+
+const selectValues: selectValuesProps[] = [
+  {
+    id: 1,
+    value: 5,
+    label: '5'
+  },
+  {
+    id: 2,
+    value: 10,
+    label: '10'
+  },
+  {
+    id: 3,
+    value: 25,
+    label: '25'
+  }
+];
+
+const Paginator = ({onclickPrevious, onclickNext, onChangeLimit}: Props) => {
   return (
     <div
       className="bg-white sticky sm:flex items-center w-full sm:justify-between bottom-0 right-0 border-t border-gray-200 p-4">
@@ -28,8 +59,17 @@ const Paginator = () => {
           className="text-gray-900 font-semibold">2290</span></span>
       </div>
       <div className="flex items-center space-x-3">
-        <a href="#"
-           className="flex-1 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
+        <select
+          onChange={onChangeLimit}
+          className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+        >
+          {selectValues.map((sv: selectValuesProps) =>
+            <option key={sv.id} value={sv.value}>{sv.label}</option>
+          )}
+        </select>
+        <button
+          onClick={onclickPrevious}
+          className="flex-1 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
           <svg className="-ml-1 mr-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd"
@@ -37,9 +77,10 @@ const Paginator = () => {
                   clipRule="evenodd"/>
           </svg>
           Previous
-        </a>
-        <a href="#"
-           className="flex-1 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
+        </button>
+        <button
+          onClick={onclickNext}
+          className="flex-1 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
           Next
           <svg className="-mr-1 ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +88,7 @@ const Paginator = () => {
                   d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                   clipRule="evenodd"/>
           </svg>
-        </a>
+        </button>
       </div>
     </div>
   );

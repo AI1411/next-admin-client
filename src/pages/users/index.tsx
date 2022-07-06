@@ -16,12 +16,14 @@ import {parseCookies} from "nookies";
 import {NextPageContext} from "next";
 
 const Users = (ctx?: NextPageContext) => {
-  const {data, error} = useSWR<User[] | undefined | any>("/api/users/all");
+  const [pageIndex, setPageIndex] = React.useState(0);
+  const [limit, setLimit] = React.useState(5);
+  const {data, error} = useSWR<User[] | undefined | any>(`/api/users/all?limit=${limit}`);
   if (data === 'unauthorized!') {
     return <UnAuthorized/>
   }
   if (error) return <div>failed to load</div>;
-  if (!data) return <Loading />
+  if (!data) return <Loading/>
 
   const deleteUser = (e: any) => {
     if (!confirm('このユーザを削除してもよろしいですか？')) {
@@ -161,7 +163,13 @@ const Users = (ctx?: NextPageContext) => {
                 </div>
               </div>
             </div>
-            <Paginator/>
+            <Paginator
+              onclickPrevious={() => setPageIndex(pageIndex - 1)}
+              onclickNext={() => setPageIndex(pageIndex + 1)}
+              onChangeLimit={(e: any) => {
+                setLimit(e.target.value);
+              }}
+            />
           </main>
           <Footer/>
         </div>

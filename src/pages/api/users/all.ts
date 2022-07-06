@@ -2,7 +2,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import {BASE_URL} from "../../../../lib/utils/const";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const response = await fetch(`${BASE_URL}/users`, {
+  const response = await fetch(`${BASE_URL}/users?limit=${req.query.limit}`, {
     headers: {
       Authorization: `Bearer ${req.cookies.jwt}`
     }
